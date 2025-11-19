@@ -21,3 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "BookApp"
 include(":app")
+include(":feature")
+include(":feature:auth")
+include(":feature:auth:impl")
+include(":feature:auth:api")
+include(":core")
+include(":core:designsystem")
