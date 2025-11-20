@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.orbitmvi.orbit.ContainerHost
@@ -12,7 +11,6 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.gureva.ebookreader.core.util.NetworkUtil
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.auth.R
-import ru.gureva.ebookreader.feature.auth.presentation.registration.RegistrationSideEffect
 import ru.gureva.ebookreader.feature.auth.usecase.CheckEmailValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.SignInUseCase
@@ -28,9 +26,9 @@ class LoginViewModel: ContainerHost<LoginState, LoginSideEffect>, ViewModel(), K
 
     fun dispatch(event: LoginEvent) {
         when (event) {
-            is LoginEvent.OnEmailChange -> onEmailChange(event.email)
-            is LoginEvent.OnPasswordChange -> onPasswordChange(event.password)
-            LoginEvent.OnPasswordVisibilityChange -> onPasswordVisibilityChange()
+            is LoginEvent.ChangeEmail -> onEmailChange(event.email)
+            is LoginEvent.ChangePassword -> onPasswordChange(event.password)
+            LoginEvent.TogglePasswordVisibility -> onPasswordVisibilityChange()
             LoginEvent.SignIn -> signIn()
         }
     }

@@ -1,6 +1,5 @@
 package ru.gureva.ebookreader.feature.auth.presentation.registration
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -28,9 +27,9 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
 
     fun dispatch(event: RegistrationEvent) {
         when (event) {
-            is RegistrationEvent.OnEmailChange -> onEmailChange(event.email)
-            is RegistrationEvent.OnPasswordChange -> onPasswordChange(event.password)
-            RegistrationEvent.OnPasswordVisibilityChange -> onPasswordVisibilityChange()
+            is RegistrationEvent.ChangeEmail -> onEmailChange(event.email)
+            is RegistrationEvent.ChangePassword -> onPasswordChange(event.password)
+            RegistrationEvent.TogglePasswordVisibility -> onPasswordVisibilityChange()
             RegistrationEvent.SignUp -> signUp()
         }
     }

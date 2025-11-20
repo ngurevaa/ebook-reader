@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ru.gureva.ebookreader.core.util.utilModule
 import ru.gureva.ebookreader.feature.auth.authModule
+import ru.gureva.ebookreader.feature.bookupload.bookUploadModule
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -14,7 +15,8 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 authModule,
-                utilModule
+                utilModule,
+                bookUploadModule
             )
         }
     }
