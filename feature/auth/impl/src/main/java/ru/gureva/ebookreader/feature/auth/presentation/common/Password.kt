@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
+import ru.gureva.ebookreader.core.ui.noRippleClickable
 
 @Composable
 internal fun PasswordField(
@@ -46,7 +47,7 @@ internal fun PasswordField(
             Icon(
                 imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                 contentDescription = null,
-                modifier = Modifier.clickable { onPasswordVisibilityChange() }
+                modifier = Modifier.noRippleClickable { onPasswordVisibilityChange() }
             )
         }
     )

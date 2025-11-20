@@ -54,8 +54,8 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
             .onFailure { ex ->
                 reduce { state.copy(isLoading = false) }
                 val message = when (ex) {
-                    is FirebaseNetworkException -> R.string.firebase_network_error
                     is FirebaseAuthUserCollisionException -> R.string.user_exists_error
+                    is FirebaseNetworkException -> R.string.firebase_network_error
                     is FirebaseTooManyRequestsException -> R.string.too_many_requests_error
                     else -> R.string.registration_error
                 }

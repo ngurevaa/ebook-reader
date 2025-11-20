@@ -12,4 +12,10 @@ class AuthRepositoryImpl(
             remoteFirebaseDatasource.createUserWithEmailAndPassword(email, password)
         }
     }
+
+    override suspend fun signIn(email: String, password: String) {
+        withContext(Dispatchers.IO) {
+            remoteFirebaseDatasource.signInWithEmailAndPassword(email, password)
+        }
+    }
 }

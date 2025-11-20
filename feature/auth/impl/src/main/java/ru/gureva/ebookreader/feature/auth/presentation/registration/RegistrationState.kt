@@ -6,5 +6,12 @@ data class RegistrationState(
     val password: String = "",
     val passwordError: String? = null,
     val isPasswordVisible: Boolean = false,
-    val isLoading: Boolean = false
-)
+    val isLoading: Boolean = false,
+) {
+    val isRegistrationEnabled: Boolean
+        get() = !isLoading
+                && emailError == null
+                && passwordError == null
+                && email.isNotBlank()
+                && password.isNotBlank()
+}

@@ -19,11 +19,23 @@ fun NavigationHost(
         navController = navController
     ) {
         composable<LoginRoute> {
-            LoginScreen()
+            LoginScreen(
+                navigateToRegistration = {
+                    navController.navigate(RegistrationRoute) {
+                        popUpTo(0)
+                    }
+                }
+            )
         }
 
         composable<RegistrationRoute> {
-            RegistrationScreen()
+            RegistrationScreen(
+                navigateToLogin = {
+                    navController.navigate(LoginRoute) {
+                        popUpTo(0)
+                    }
+                }
+            )
         }
     }
 }

@@ -8,4 +8,8 @@ class RemoteFirebaseDatasource {
     suspend fun createUserWithEmailAndPassword(email: String, password: String) {
         Firebase.auth.createUserWithEmailAndPassword(email, password).await()
     }
+
+    suspend fun signInWithEmailAndPassword(email: String, password: String) {
+        Firebase.auth.signInWithEmailAndPassword(email, password).await()
+    }
 }

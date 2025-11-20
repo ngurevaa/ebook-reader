@@ -46,6 +46,9 @@ dependencies {
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
     implementation(libs.androidx.navigation)
 
     implementation(platform(libs.koin.bom))

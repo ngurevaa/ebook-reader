@@ -7,13 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -23,7 +19,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,6 +36,7 @@ import ru.gureva.ebookreader.feature.auth.presentation.common.PasswordField
 
 @Composable
 fun RegistrationScreen(
+    navigateToLogin: () -> Unit,
     viewModel: RegistrationViewModel = koinViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -50,7 +46,7 @@ fun RegistrationScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = { RegistrationTopAppBar() },
+        topBar = { RegistrationTopAppBar(navigateToLogin) },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
         Column(
@@ -88,7 +84,9 @@ fun RegistrationScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RegistrationTopAppBar() {
+internal fun RegistrationTopAppBar(
+    navigateToLogin: () -> Unit
+) {
     TopAppBar(
         title = {
             Text(
@@ -97,7 +95,7 @@ internal fun RegistrationTopAppBar() {
             )
         },
         actions = {
-            Button(onClick = {  }) {
+            Button(onClick = { navigateToLogin() }) {
                 Text(text = stringResource(R.string.log_into_account))
             }
         }
@@ -147,9 +145,7 @@ internal fun RegistrationScreenContent(
         Button(
             onClick = { dispatch(RegistrationEvent.SignUp) },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !state.isLoading
-                    && state.emailError == null && state.passwordError == null
-                    && !state.email.isEmpty() && !state.password.isEmpty()
+            enabled = state.isRegistrationEnabled
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(

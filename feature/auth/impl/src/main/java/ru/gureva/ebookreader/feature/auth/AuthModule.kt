@@ -11,6 +11,8 @@ import ru.gureva.ebookreader.feature.auth.usecase.CheckEmailValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.CheckEmailValidityUseCaseImpl
 import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCaseImpl
+import ru.gureva.ebookreader.feature.auth.usecase.SignInUseCase
+import ru.gureva.ebookreader.feature.auth.usecase.SignInUseCaseImpl
 import ru.gureva.ebookreader.feature.auth.usecase.SignUpUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.SignUpUseCaseImpl
 
@@ -21,6 +23,7 @@ val authModule = module {
     factory<CheckEmailValidityUseCase> { CheckEmailValidityUseCaseImpl(get()) }
     factory<CheckPasswordValidityUseCase> { CheckPasswordValidityUseCaseImpl(get()) }
     factory<SignUpUseCase> { SignUpUseCaseImpl(get()) }
+    factory<SignInUseCase> { SignInUseCaseImpl(get()) }
 
     factory<AuthRepository> { AuthRepositoryImpl(get()) }
 
