@@ -1,9 +1,12 @@
 package ru.gureva.ebookreader.feature.auth.presentation.login
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,8 +29,6 @@ import ru.gureva.ebookreader.feature.auth.R
 import ru.gureva.ebookreader.feature.auth.presentation.common.EmailField
 import ru.gureva.ebookreader.feature.auth.presentation.common.PasswordField
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel()
@@ -36,21 +37,7 @@ fun LoginScreen(
     val dispatch = viewModel::dispatch
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.log_into_account),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                },
-                actions = {
-                    Button(onClick = {  }) {
-                        Text(text = stringResource(R.string.registration))
-                    }
-                }
-            )
-        }
+        topBar = { LoginTopAppBar() }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -60,6 +47,24 @@ fun LoginScreen(
             LoginScreenContent(state, dispatch)
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun LoginTopAppBar() {
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.log_into_account),
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
+        actions = {
+            Button(onClick = {  }) {
+                Text(text = stringResource(R.string.registration))
+            }
+        }
+    )
 }
 
 @Composable
@@ -81,7 +86,18 @@ internal fun LoginScreenContent(
             email = state.email,
             onEmailChange = { dispatch(LoginEvent.OnEmailChange(it)) }
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Column(
+            modifier = Modifier.heightIn(min = 48.dp)
+        ) {
+            AnimatedVisibility(
+                visible = state.emailError != null,
+            ) {
+                Text(
+                    text = state.emailError.toString(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
         Text(
             text = stringResource(R.string.password),
             style = MaterialTheme.typography.titleMedium
@@ -93,7 +109,18 @@ internal fun LoginScreenContent(
             isPasswordVisible = state.isPasswordVisible,
             onPasswordVisibilityChange = { dispatch(LoginEvent.OnPasswordVisibilityChange) }
         )
-        Spacer(modifier = Modifier.height(64.dp))
+        Column(
+            modifier = Modifier.heightIn(min = 100.dp)
+        ) {
+            AnimatedVisibility(
+                visible = state.passwordError != null
+            ) {
+                Text(
+                    text = state.passwordError.toString(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
         Button(
             onClick = {},
             modifier = Modifier.fillMaxWidth()

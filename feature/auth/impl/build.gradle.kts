@@ -37,7 +37,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:auth:api"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:util"))
 
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.compose)

@@ -5,4 +5,6 @@
     <string name="email">Email</string>
     <string name="password">Пароль</string>
     <string name="log_in">Войти</string>
+    <string name="email_error">Введите email в формате example@mail.com</string>
+    <string name="password_error">Пароль должен содержать не менее 8 символов, включая заглавные и строчные буквы, цифры и специальные символы</string>
 </resources>
