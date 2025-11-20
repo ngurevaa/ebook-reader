@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import ru.gureva.ebookreader.core.designsystem.theme.AppTheme
 import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
+import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
 import ru.gureva.ebookreader.navigation.NavigationHost
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavigationHost(
-                        startDestination = LoginRoute,
+                        startDestination = RegistrationRoute,
                         navController = navController
                     )
                 }

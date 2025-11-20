@@ -5,4 +5,5 @@ import org.koin.dsl.module
 val utilModule = module {
     single { FieldValidator() }
     single { ResourceManager(get()) }
+    single { NetworkUtil(get()) }
 }
