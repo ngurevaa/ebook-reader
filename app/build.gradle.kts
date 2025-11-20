@@ -42,8 +42,12 @@ android {
 
 dependencies {
     implementation(project(":core:designsystem"))
+    implementation(project(":core:util"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
     implementation(libs.androidx.navigation)
 

@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import ru.gureva.ebookreader.feature.auth.navigation.AuthRoute
-import ru.gureva.ebookreader.feature.auth.ui.AuthScreen
+import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
+import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
+import ru.gureva.ebookreader.feature.auth.presentation.login.LoginScreen
+import ru.gureva.ebookreader.feature.auth.presentation.registration.RegistrationScreen
 
 @Composable
 fun NavigationHost(
@@ -16,8 +18,24 @@ fun NavigationHost(
         startDestination = startDestination,
         navController = navController
     ) {
-        composable<AuthRoute> {
-            AuthScreen()
+        composable<LoginRoute> {
+            LoginScreen(
+                navigateToRegistration = {
+                    navController.navigate(RegistrationRoute) {
+                        popUpTo(0)
+                    }
+                }
+            )
+        }
+
+        composable<RegistrationRoute> {
+            RegistrationScreen(
+                navigateToLogin = {
+                    navController.navigate(LoginRoute) {
+                        popUpTo(0)
+                    }
+                }
+            )
         }
     }
 }

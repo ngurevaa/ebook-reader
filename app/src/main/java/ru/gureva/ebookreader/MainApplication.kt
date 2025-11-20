@@ -3,6 +3,8 @@ package ru.gureva.ebookreader
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import ru.gureva.ebookreader.core.util.utilModule
+import ru.gureva.ebookreader.feature.auth.authModule
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -11,7 +13,8 @@ class MainApplication : Application() {
         startKoin {
             androidContext(this@MainApplication)
             modules(
-
+                authModule,
+                utilModule
             )
         }
     }
