@@ -33,8 +33,6 @@ import ru.gureva.ebookreader.feature.auth.R
 import ru.gureva.ebookreader.feature.auth.presentation.common.EmailField
 import ru.gureva.ebookreader.feature.auth.presentation.common.Error
 import ru.gureva.ebookreader.feature.auth.presentation.common.PasswordField
-import ru.gureva.ebookreader.feature.auth.presentation.registration.RegistrationEvent
-import ru.gureva.ebookreader.feature.auth.presentation.registration.RegistrationSideEffect
 
 @Composable
 fun LoginScreen(
@@ -121,7 +119,7 @@ internal fun LoginScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         EmailField(
             email = state.email,
-            onEmailChange = { dispatch(LoginEvent.OnEmailChange(it)) }
+            onEmailChange = { dispatch(LoginEvent.ChangeEmail(it)) }
         )
         Error(
             visible = state.emailError != null,
@@ -135,9 +133,9 @@ internal fun LoginScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         PasswordField(
             password = state.password,
-            onPasswordChange = { dispatch(LoginEvent.OnPasswordChange(it)) },
+            onPasswordChange = { dispatch(LoginEvent.ChangePassword(it)) },
             isPasswordVisible = state.isPasswordVisible,
-            onPasswordVisibilityChange = { dispatch(LoginEvent.OnPasswordVisibilityChange) }
+            onPasswordVisibilityChange = { dispatch(LoginEvent.TogglePasswordVisibility) }
         )
         Error(
             visible = state.passwordError != null,

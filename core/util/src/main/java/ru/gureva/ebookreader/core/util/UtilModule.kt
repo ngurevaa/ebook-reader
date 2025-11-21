@@ -6,4 +6,5 @@ val utilModule = module {
     single { FieldValidator() }
     single { ResourceManager(get()) }
     single { NetworkUtil(get()) }
+    single { FileUtil(get()) }
 }

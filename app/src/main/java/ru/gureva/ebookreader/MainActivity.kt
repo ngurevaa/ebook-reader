@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
@@ -14,6 +17,7 @@ import ru.gureva.ebookreader.core.designsystem.theme.AppTheme
 import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
 import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
 import ru.gureva.ebookreader.feature.auth.presentation.login.LoginScreen
+import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.navigation.NavigationHost
 
 class MainActivity : ComponentActivity() {
@@ -23,12 +27,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
+                val startDestination = if (Firebase.auth.currentUser == null) LoginRoute
+                else BookUploadRoute
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavigationHost(
-                        startDestination = LoginRoute,
-                        navController = navController
-                    )
+                    Surface(modifier = Modifier.padding(innerPadding)) {
+                        NavigationHost(
+                            startDestination = startDestination,
+                            navController = navController
+                        )
+                    }
                 }
             }
         }

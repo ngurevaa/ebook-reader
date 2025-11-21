@@ -119,7 +119,7 @@ internal fun RegistrationScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         EmailField(
             email = state.email,
-            onEmailChange = { dispatch(RegistrationEvent.OnEmailChange(it)) }
+            onEmailChange = { dispatch(RegistrationEvent.ChangeEmail(it)) }
         )
         Error(
             visible = state.emailError != null,
@@ -133,9 +133,9 @@ internal fun RegistrationScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         PasswordField(
             password = state.password,
-            onPasswordChange = { dispatch(RegistrationEvent.OnPasswordChange(it)) },
+            onPasswordChange = { dispatch(RegistrationEvent.ChangePassword(it)) },
             isPasswordVisible = state.isPasswordVisible,
-            onPasswordVisibilityChange = { dispatch(RegistrationEvent.OnPasswordVisibilityChange) }
+            onPasswordVisibilityChange = { dispatch(RegistrationEvent.TogglePasswordVisibility) }
         )
         Error(
             visible = state.passwordError != null,

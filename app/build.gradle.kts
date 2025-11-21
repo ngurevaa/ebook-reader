@@ -43,8 +43,11 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
+    implementation(project(":core:network"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
+    implementation(project(":feature:bookupload:api"))
+    implementation(project(":feature:bookupload:impl"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
