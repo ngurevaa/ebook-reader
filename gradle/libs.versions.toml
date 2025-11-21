@@ -18,9 +18,10 @@ koin-bom = "4.1.0"
 firebase-bom = "34.6.0"
 icons-extended = "1.7.8"
 orbit = "10.0.0"
-supabase = "3.2.6"
+supabase = "3.0.1"
 appcompatVersion = "1.7.1"
 materialVersion = "1.13.0"
+ktor = "3.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,8 @@ orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.r
 orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit" }
 
 supabase-storage = { group = "io.github.jan-tennert.supabase", name = "storage-kt", version.ref = "supabase" }
+
+ktor = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }

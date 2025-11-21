@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -30,10 +32,21 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    val secretsProperties = Properties().apply {
+        load(file("secrets.properties").inputStream())
+    }
+    defaultConfig {
+        buildConfigField("String", "SUPABASE_URL", secretsProperties.getProperty("SUPABASE_URL", "\"\""))
+        buildConfigField("String", "SUPABASE_KEY", secretsProperties.getProperty("SUPABASE_KEY", "\"\""))
+    }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation(libs.supabase.storage)
+    implementation(libs.ktor)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.compose)
