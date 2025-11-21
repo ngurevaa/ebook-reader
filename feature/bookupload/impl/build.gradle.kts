@@ -46,7 +46,10 @@ dependencies {
     implementation(libs.orbit.compose)
 
     implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    implementation(libs.supabase.storage)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.compose)

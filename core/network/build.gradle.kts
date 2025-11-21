@@ -36,8 +36,8 @@ android {
         load(file("secrets.properties").inputStream())
     }
     defaultConfig {
-        buildConfigField("String", "SUPABASE_URL", secretsProperties.getProperty("SUPABASE_URL", "\"\""))
-        buildConfigField("String", "SUPABASE_KEY", secretsProperties.getProperty("SUPABASE_KEY", "\"\""))
+        buildConfigField("String", "SUPABASE_URL", "\"${secretsProperties.getProperty("SUPABASE_URL")}\"")
+        buildConfigField("String", "SUPABASE_KEY", "\"${secretsProperties.getProperty("SUPABASE_KEY")}\"")
     }
     buildFeatures {
         buildConfig = true

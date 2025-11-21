@@ -14,4 +14,8 @@ class FileUtil(
             cursor.getString(nameIndex)
         }
     }
+
+    fun getFileBytesFromUri(uri: Uri): ByteArray? {
+        return context.contentResolver.openInputStream(uri)?.readBytes()
+    }
 }

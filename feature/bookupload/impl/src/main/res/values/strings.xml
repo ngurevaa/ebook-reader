@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="book_upload">Загрузка книги</string>
+    <string name="book_name">Название книги</string>
+    <string name="book_author">Автор книги</string>
+    <string name="download">Загрузить</string>
+    <string name="select_file">Выбрать файл</string>
+    <string name="selected_file">Выбранный файл</string>
+    <string name="book_downloaded_successfully">Книга успешно загружена!</string>
+    <string name="network_error">Нет подключения к интернету. Проверьте Wi-Fi или мобильные данные</string>
+    <string name="download_error">Произошла ошибка загрузки файла. Попробейте позднее</string>
+    <string name="retry">Повторить</string>
+</resources>
