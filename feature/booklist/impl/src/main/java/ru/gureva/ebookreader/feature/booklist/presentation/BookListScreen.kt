@@ -1,8 +1,8 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,15 +40,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
-import ru.gureva.ebookreader.core.designsystem.theme.AppTheme
+import ru.gureva.ebookreader.core.ui.noRippleClickable
 
 @Composable
 fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
@@ -78,11 +74,11 @@ fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
     val retryLabel = stringResource(R.string.retry)
     viewModel.collectSideEffect {
         when (it) {
-//            is BookUploadSideEffect.ShowSnackbar -> {
-//                coroutineScope.launch {
-//                    snackbarHostState.showSnackbar(it.message)
-//                }
-//            }
+            is BookListSideEffect.ShowSnackbar -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(it.message)
+                }
+            }
             is BookListSideEffect.ShowSnackbarWithRetryButton -> {
                 coroutineScope.launch {
                     val result = snackbarHostState.showSnackbar(
@@ -100,7 +96,10 @@ fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
 }
 
 @Composable
-internal fun BookListScreenContent(state: BookListState, dispatch: (BookListEvent) -> Unit) {
+internal fun BookListScreenContent(
+    state: BookListState,
+    dispatch: (BookListEvent) -> Unit
+) {
     Spacer(modifier = Modifier.height(32.dp))
     Text(
         text = stringResource(R.string.my_books),
@@ -113,12 +112,16 @@ internal fun BookListScreenContent(state: BookListState, dispatch: (BookListEven
         placeholder = stringResource(R.string.book_research)
     )
     Spacer(modifier = Modifier.height(16.dp))
-    BookList(state.books)
+    BookList(
+        books = state.books,
+        onDelete = { dispatch(BookListEvent.DeleteBook(it)) }
+    )
 }
 
 @Composable
 internal fun BookList(
-    books: List<Book>
+    books: List<Book>,
+    onDelete: (String) -> Unit
 ) {
     if (books.isEmpty()) {
         Text(text = stringResource(R.string.load_your_first_book))
@@ -126,23 +129,25 @@ internal fun BookList(
     }
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(vertical = 8.dp)
     ) {
         items(
             items = books,
-            key = { book -> book.id }
+            key = { book -> book.fileName }
         ) {
-            BookItem(it)
+            BookItem(book = it, onDelete = onDelete)
         }
     }
 }
 
 @Composable
 internal fun BookItem(
-    book: Book
+    book: Book,
+    onDelete: (String) -> Unit
 ) {
     Surface(
-//        shadowElevation = 8.dp,
+        shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -168,7 +173,10 @@ internal fun BookItem(
             if (book.local) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.noRippleClickable {
+                        onDelete(book.fileName)
+                    }
                 )
             }
             else {

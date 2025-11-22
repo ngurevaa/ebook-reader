@@ -16,6 +16,13 @@ class LocalBookDataSource(
             ?: emptyList()
     }
 
+    fun deleteBook(fileName: String) {
+        val booksDir = File(context.filesDir, LOCAL_DIRECTORY_NAME)
+        val fileToDelete = File(booksDir, fileName)
+
+        fileToDelete.delete()
+    }
+
     companion object {
         private const val LOCAL_DIRECTORY_NAME = "books"
     }

@@ -5,4 +5,6 @@
     <string name="book_loading_error">Произошла ошибка. Проверьте подключение к интернету</string>
     <string name="retry">Повторить</string>
     <string name="load_your_first_book">Загрузите свою первую книгу!</string>
+    <string name="book_successfully_deleted">Книга успешно удалена</string>
+    <string name="book_deleting_error">Произошла ошибка при удалении книги. Попробуйте позднее</string>
 </resources>

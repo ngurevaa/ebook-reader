@@ -21,4 +21,10 @@ class BookRepositoryImpl(
             localBookDataSource.getBooks()
         }
     }
+
+    override suspend fun deleteLocalBook(fileName: String) {
+        withContext(Dispatchers.IO) {
+            localBookDataSource.deleteBook(fileName)
+        }
+    }
 }

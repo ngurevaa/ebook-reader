@@ -5,4 +5,5 @@ import ru.gureva.ebookreader.feature.booklist.model.FirestoreBookMetadata
 interface BookRepository {
     suspend fun getBooksFromFirestore(userId: String): List<FirestoreBookMetadata>
     suspend fun getLocalBooks(): List<String>
+    suspend fun deleteLocalBook(fileName: String)
 }
