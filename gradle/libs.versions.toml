@@ -22,6 +22,7 @@ supabase = "3.0.1"
 appcompatVersion = "1.7.1"
 materialVersion = "1.13.0"
 ktor = "3.0.0"
+coil = "3.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +63,9 @@ orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref =
 supabase-storage = { group = "io.github.jan-tennert.supabase", name = "storage-kt", version.ref = "supabase" }
 
 ktor = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }

@@ -8,6 +8,8 @@ import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
 import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
 import ru.gureva.ebookreader.feature.auth.presentation.login.LoginScreen
 import ru.gureva.ebookreader.feature.auth.presentation.registration.RegistrationScreen
+import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
+import ru.gureva.ebookreader.feature.booklist.presentation.BookListScreen
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.feature.bookupload.presentation.BookUploadScreen
 
@@ -42,6 +44,10 @@ fun NavigationHost(
 
         composable<BookUploadRoute> {
             BookUploadScreen()
+        }
+
+        composable<BookListRoute> {
+            BookListScreen()
         }
     }
 }

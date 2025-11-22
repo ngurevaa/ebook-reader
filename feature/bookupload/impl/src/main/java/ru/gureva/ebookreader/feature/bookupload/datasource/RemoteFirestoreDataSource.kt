@@ -5,7 +5,7 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 import ru.gureva.ebookreader.feature.bookupload.model.FirestoreBookMetadata
 
-class RemoteFirestoreDatasource {
+class RemoteFirestoreDataSource {
     suspend fun saveBookMetadata(metadata: FirestoreBookMetadata) {
         Firebase.firestore
             .collection(COLLECTION_NAME)

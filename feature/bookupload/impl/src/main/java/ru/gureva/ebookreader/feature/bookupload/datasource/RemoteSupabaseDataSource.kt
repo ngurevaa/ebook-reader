@@ -1,11 +1,10 @@
 package ru.gureva.ebookreader.feature.bookupload.datasource
 
-import android.util.Log
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.storage.storage
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 
-class RemoteSupabaseDatasource(
+class RemoteSupabaseDataSource(
     private val supabaseClient: SupabaseClient
 ) {
     suspend fun uploadBookToStorage(bookMetadata: BookMetadata): String {
