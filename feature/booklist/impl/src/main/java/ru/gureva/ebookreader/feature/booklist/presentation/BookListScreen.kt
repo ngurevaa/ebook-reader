@@ -1,5 +1,6 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,6 +41,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
@@ -60,7 +62,6 @@ fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .navigationBarsPadding()
                 .padding(horizontal = 16.dp)
         ) {
             BookListScreenContent(state, dispatch)
@@ -100,7 +101,7 @@ internal fun BookListScreenContent(
     state: BookListState,
     dispatch: (BookListEvent) -> Unit
 ) {
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(24.dp))
     Text(
         text = stringResource(R.string.my_books),
         style = MaterialTheme.typography.headlineMedium
@@ -114,14 +115,16 @@ internal fun BookListScreenContent(
     Spacer(modifier = Modifier.height(16.dp))
     BookList(
         books = state.books,
-        onDelete = { dispatch(BookListEvent.DeleteBook(it)) }
+        onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
+        onDownload = { dispatch(BookListEvent.DownloadBook(it)) }
     )
 }
 
 @Composable
 internal fun BookList(
     books: List<Book>,
-    onDelete: (String) -> Unit
+    onDelete: (String) -> Unit,
+    onDownload: (String) -> Unit
 ) {
     if (books.isEmpty()) {
         Text(text = stringResource(R.string.load_your_first_book))
@@ -136,7 +139,7 @@ internal fun BookList(
             items = books,
             key = { book -> book.fileName }
         ) {
-            BookItem(book = it, onDelete = onDelete)
+            BookItem(book = it, onDelete = onDelete, onDownload = onDownload)
         }
     }
 }
@@ -144,7 +147,8 @@ internal fun BookList(
 @Composable
 internal fun BookItem(
     book: Book,
-    onDelete: (String) -> Unit
+    onDelete: (String) -> Unit,
+    onDownload: (String) -> Unit
 ) {
     Surface(
         shadowElevation = 2.dp,
@@ -179,10 +183,16 @@ internal fun BookItem(
                     }
                 )
             }
+            else if (book.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+            }
             else {
                 Icon(
                     imageVector = Icons.Filled.Download,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.noRippleClickable {
+                        onDownload(book.fileUrl)
+                    }
                 )
             }
         }

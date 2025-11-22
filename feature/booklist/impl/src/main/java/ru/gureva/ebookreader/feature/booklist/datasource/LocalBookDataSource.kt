@@ -2,6 +2,7 @@ package ru.gureva.ebookreader.feature.booklist.datasource
 
 import android.content.Context
 import java.io.File
+import java.io.FileOutputStream
 
 class LocalBookDataSource(
     private val context: Context
@@ -21,6 +22,15 @@ class LocalBookDataSource(
         val fileToDelete = File(booksDir, fileName)
 
         fileToDelete.delete()
+    }
+
+    fun saveBook(data: ByteArray, fileName: String) {
+        val booksDir = File(context.filesDir, LOCAL_DIRECTORY_NAME).apply { mkdirs() }
+        val outputFile = File(booksDir, fileName)
+
+        FileOutputStream(outputFile).use { output ->
+            output.write(data)
+        }
     }
 
     companion object {

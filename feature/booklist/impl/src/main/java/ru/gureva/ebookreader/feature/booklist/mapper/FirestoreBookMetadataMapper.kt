@@ -1,4 +1,4 @@
-package ru.gureva.ebookreader.feature.booklist
+package ru.gureva.ebookreader.feature.booklist.mapper
 
 import com.google.firebase.firestore.DocumentSnapshot
 import ru.gureva.ebookreader.feature.booklist.model.FirestoreBookMetadata

@@ -87,7 +87,7 @@ internal fun BookUploadScreenContent(
     state: BookUploadState,
     dispatch: (BookUploadEvent) -> Unit
 ) {
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(24.dp))
     Text(
         text = stringResource(R.string.book_upload),
         style = MaterialTheme.typography.headlineMedium

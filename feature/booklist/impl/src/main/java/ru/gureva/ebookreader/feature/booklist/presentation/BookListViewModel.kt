@@ -1,6 +1,5 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -11,7 +10,9 @@ import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCase
 import org.koin.core.component.inject
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.booklist.R
+import ru.gureva.ebookreader.feature.booklist.model.Book
 import ru.gureva.ebookreader.feature.booklist.usecase.DeleteBookUseCase
+import ru.gureva.ebookreader.feature.booklist.usecase.DownloadBookUseCase
 
 class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, ViewModel(), KoinComponent {
     override val container = container<BookListState, BookListSideEffect>(BookListState())
@@ -19,22 +20,39 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
     private val resourceManager: ResourceManager by inject()
     private val getAllBooksUseCase: GetAllBooksUseCase by inject()
     private val deleteBookUseCase: DeleteBookUseCase by inject()
+    private val downloadBookUseCase: DownloadBookUseCase by inject()
 
     fun dispatch(event: BookListEvent) {
         when (event) {
             BookListEvent.LoadBooks -> loadBooks()
             is BookListEvent.DeleteBook -> deleteBook(event.fileName)
+            is BookListEvent.DownloadBook -> downloadBook(event.fileUrl)
         }
+    }
+
+    private fun downloadBook(fileUrl: String) = intent {
+        runCatching {
+            updateBookByUrl(fileUrl) { it.copy(isLoading = true) }
+            downloadBookUseCase(fileUrl)
+        }
+            .onSuccess {
+                updateBookByUrl(fileUrl) { it.copy(local = true, isLoading = false) }
+                postSideEffect(BookListSideEffect.ShowSnackbar(
+                    resourceManager.getString(R.string.book_successfully_downloaded)
+                ))
+            }
+            .onFailure {
+                updateBookByUrl(fileUrl) { it.copy(isLoading = false) }
+                postSideEffect(BookListSideEffect.ShowSnackbar(
+                    resourceManager.getString(R.string.book_downloading_error)
+                ))
+            }
     }
 
     private fun deleteBook(fileName: String) = intent {
         runCatching { deleteBookUseCase(fileName) }
             .onSuccess {
-                val books = state.books.toMutableList()
-                val index = books.indexOfFirst { book -> book.fileName == fileName }
-                books[index] = books[index].copy(local = false)
-
-                reduce { state.copy(books = books) }
+                updateBookByName(fileName) { it.copy(local = false) }
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_successfully_deleted)
                 ))
@@ -61,5 +79,23 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
                     resourceManager.getString(R.string.book_loading_error)
                 ))
             }
+    }
+
+    private fun updateBookByUrl(fileUrl: String, update: (Book) -> Book) = intent {
+        val books = state.books.toMutableList()
+        val index = books.indexOfFirst { it.fileUrl == fileUrl }
+        if (index != -1) {
+            books[index] = update(books[index])
+            reduce { state.copy(books = books) }
+        }
+    }
+
+    private fun updateBookByName(fileName: String, update: (Book) -> Book) = intent {
+        val books = state.books.toMutableList()
+        val index = books.indexOfFirst { it.fileName == fileName }
+        if (index != -1) {
+            books[index] = update(books[index])
+            reduce { state.copy(books = books) }
+        }
     }
 }

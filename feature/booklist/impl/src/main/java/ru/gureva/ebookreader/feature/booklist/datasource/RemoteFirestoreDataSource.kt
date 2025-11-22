@@ -4,7 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 import ru.gureva.ebookreader.feature.booklist.model.FirestoreBookMetadata
-import ru.gureva.ebookreader.feature.booklist.toFirestoreBookMetadata
+import ru.gureva.ebookreader.feature.booklist.mapper.toFirestoreBookMetadata
 
 class RemoteFirestoreDataSource {
     suspend fun getUserBooks(userId: String): List<FirestoreBookMetadata> {
