@@ -53,9 +53,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { if (showBottomBar) BottomNavigationBar(navController) }
                 ) { innerPadding ->
                     Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
+                        modifier = Modifier.fillMaxSize()
                     ) {
                         NavigationHost(
                             startDestination = startDestination,

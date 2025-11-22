@@ -11,11 +11,13 @@ class GetAllBooksUseCaseImpl(
         val allBooks = bookRepository.getBooksFromFirestore(userId)
 
         val books = mutableListOf<Book>()
+        var counter = 1
         for (book in allBooks) {
             val local = localBooks.contains(book.fileUrl.substringAfterLast("/"))
 
             books.add(
                 Book(
+                    id = counter++,
                     title = book.title,
                     author = book.author,
                     local = local

@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,8 +51,8 @@ fun BookUploadScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(padding)
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
         ) {
             BookUploadScreenContent(state, dispatch)
         }
@@ -86,62 +87,58 @@ internal fun BookUploadScreenContent(
     state: BookUploadState,
     dispatch: (BookUploadEvent) -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(horizontal = 16.dp)
+    Spacer(modifier = Modifier.height(32.dp))
+    Text(
+        text = stringResource(R.string.book_upload),
+        style = MaterialTheme.typography.headlineMedium
+    )
+    Spacer(modifier = Modifier.height(32.dp))
+    GetContent(
+        fileName = state.fileName,
+        selectFile = { dispatch(BookUploadEvent.SelectFile(it)) }
+    )
+    Spacer(modifier = Modifier.height(32.dp))
+    Text(
+        text = stringResource(R.string.book_name),
+        style = MaterialTheme.typography.titleMedium
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    CustomTextField(
+        value = state.bookName,
+        onValueChange = { dispatch(BookUploadEvent.ChangeBookName(it)) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+        )
+    )
+    Spacer(modifier = Modifier.height(32.dp))
+    Text(
+        text = stringResource(R.string.book_author),
+        style = MaterialTheme.typography.titleMedium
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    CustomTextField(
+        value = state.bookAuthor,
+        onValueChange = { dispatch(BookUploadEvent.ChangeBookAuthor(it)) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done
+        )
+    )
+    Spacer(modifier = Modifier.height(32.dp))
+    Button(
+        onClick = { dispatch(BookUploadEvent.UploadBook) },
+        modifier = Modifier.fillMaxWidth(),
+        enabled = state.isUploadingEnabled
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(R.string.book_upload),
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        GetContent(
-            fileName = state.fileName,
-            selectFile = { dispatch(BookUploadEvent.SelectFile(it)) }
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(R.string.book_name),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        CustomTextField(
-            value = state.bookName,
-            onValueChange = { dispatch(BookUploadEvent.ChangeBookName(it)) },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp)
             )
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(R.string.book_author),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        CustomTextField(
-            value = state.bookAuthor,
-            onValueChange = { dispatch(BookUploadEvent.ChangeBookAuthor(it)) },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
+        }
+        else {
+            Text(
+                text = stringResource(R.string.download),
+                style = MaterialTheme.typography.titleMedium
             )
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = { dispatch(BookUploadEvent.UploadBook) },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = state.isUploadingEnabled
-        ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            else {
-                Text(
-                    text = stringResource(R.string.download),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
         }
     }
 }
@@ -172,6 +169,6 @@ internal fun GetContent(
 
     Spacer(modifier = Modifier.height(16.dp))
     if (fileName != null) {
-        Text(text = "${stringResource(R.string.select_file)}: $fileName")
+        Text(text = "${stringResource(R.string.selected_file)}: $fileName")
     }
 }
