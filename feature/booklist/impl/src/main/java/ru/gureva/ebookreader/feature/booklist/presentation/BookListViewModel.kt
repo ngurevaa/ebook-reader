@@ -4,15 +4,15 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCase
-import org.koin.core.component.inject
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.booklist.R
 import ru.gureva.ebookreader.feature.booklist.model.Book
 import ru.gureva.ebookreader.feature.booklist.usecase.DeleteBookUseCase
 import ru.gureva.ebookreader.feature.booklist.usecase.DownloadBookUseCase
+import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCase
 
 class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, ViewModel(), KoinComponent {
     override val container = container<BookListState, BookListSideEffect>(BookListState())
@@ -27,7 +27,23 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
             BookListEvent.LoadBooks -> loadBooks()
             is BookListEvent.DeleteBook -> deleteBook(event.fileName)
             is BookListEvent.DownloadBook -> downloadBook(event.fileUrl)
+            is BookListEvent.SearchBooks -> searchBooks(event.search)
         }
+    }
+
+    private fun searchBooks(search: String) = intent {
+        reduce { state.copy(search = search) }
+        if (state.search.isBlank()) {
+            reduce { state.copy(searchBooks = listOf()) }
+            return@intent
+        }
+
+        val searchBooks = state.books.filter { book ->
+            book.local == true
+                    && (book.author.lowercase().contains(state.search.lowercase())
+                            || book.title.lowercase().contains(state.search.lowercase()))
+        }
+        reduce { state.copy(searchBooks = searchBooks) }
     }
 
     private fun downloadBook(fileUrl: String) = intent {

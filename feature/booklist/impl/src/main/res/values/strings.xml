@@ -9,4 +9,5 @@
     <string name="book_deleting_error">Произошла ошибка при удалении книги. Попробуйте позднее</string>
     <string name="book_successfully_downloaded">Книга успешно загружена</string>
     <string name="book_downloading_error">Произошла ошибка при сохранении книги. Попробуйте позднее</string>
+    <string name="nothing_was_found">Ничего не найдено</string>
 </resources>

@@ -1,5 +1,6 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,15 +39,22 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 import ru.gureva.ebookreader.feature.booklist.model.Book
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import coil3.compose.AsyncImage
 import ru.gureva.ebookreader.core.ui.noRippleClickable
+import java.nio.file.WatchEvent
 
 @Composable
 fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
@@ -101,6 +109,8 @@ internal fun BookListScreenContent(
     state: BookListState,
     dispatch: (BookListEvent) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Spacer(modifier = Modifier.height(24.dp))
     Text(
         text = stringResource(R.string.my_books),
@@ -108,15 +118,31 @@ internal fun BookListScreenContent(
     )
     Spacer(modifier = Modifier.height(16.dp))
     CustomTextField(
-        value = "",
-        onValueChange = {},
-        placeholder = stringResource(R.string.book_research)
+        value = state.search,
+        onValueChange = { dispatch(BookListEvent.SearchBooks(it)) },
+        placeholder = stringResource(R.string.book_research),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        trailingIcon = {
+            if (state.search.isNotBlank()) {
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = null,
+                    modifier = Modifier.noRippleClickable {
+                        dispatch(BookListEvent.SearchBooks(""))
+                        keyboardController?.hide()
+                    }
+                )
+            }
+        }
     )
     Spacer(modifier = Modifier.height(16.dp))
     BookList(
-        books = state.books,
+        books = if (state.search.isEmpty()) state.books else state.searchBooks,
         onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
-        onDownload = { dispatch(BookListEvent.DownloadBook(it)) }
+        onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
+        emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found
     )
 }
 
@@ -124,10 +150,11 @@ internal fun BookListScreenContent(
 internal fun BookList(
     books: List<Book>,
     onDelete: (String) -> Unit,
-    onDownload: (String) -> Unit
+    onDownload: (String) -> Unit,
+    @StringRes emptyListMessage: Int
 ) {
     if (books.isEmpty()) {
-        Text(text = stringResource(R.string.load_your_first_book))
+        Text(text = stringResource(emptyListMessage))
         return
     }
 
