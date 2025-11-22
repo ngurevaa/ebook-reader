@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ fun CustomTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable () -> Unit = {},
+    placeholder: String = "",
     modifier: Modifier = Modifier
 ) {
     BasicTextField(
@@ -42,6 +44,14 @@ fun CustomTextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(Modifier.weight(1f)) {
+                    if (value.isEmpty() && placeholder.isNotBlank()) {
+                        Text(
+                            text = placeholder,
+                            style = LocalTextStyle.current.copy(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        )
+                    }
                     innerTextField()
                 }
                 trailingIcon()

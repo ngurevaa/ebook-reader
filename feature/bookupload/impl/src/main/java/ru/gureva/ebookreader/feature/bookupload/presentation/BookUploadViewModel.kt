@@ -17,7 +17,7 @@ import ru.gureva.ebookreader.feature.bookupload.exception.NotAuthenticatedExcept
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
 
-class BookUploadViewModel: ContainerHost<BookUploadState, BookUploadSideEffect>, ViewModel(), KoinComponent {
+class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>, ViewModel(), KoinComponent {
     override val container = container<BookUploadState, BookUploadSideEffect>(BookUploadState())
 
     private val fileUtil: FileUtil by inject()

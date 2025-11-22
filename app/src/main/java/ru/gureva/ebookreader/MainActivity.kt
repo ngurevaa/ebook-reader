@@ -18,6 +18,7 @@ import ru.gureva.ebookreader.core.designsystem.theme.AppTheme
 import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
 import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
 import ru.gureva.ebookreader.feature.auth.presentation.login.LoginScreen
+import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.navigation.BottomDestinations
 import ru.gureva.ebookreader.navigation.BottomNavigationBar
@@ -44,8 +45,8 @@ class MainActivity : ComponentActivity() {
                     bottomBarDestinations.any { it == route }
                 } == true
 
-                val startDestination = if (Firebase.auth.currentUser != null) LoginRoute
-                else BookUploadRoute
+                val startDestination = if (Firebase.auth.currentUser == null) LoginRoute
+                else BookListRoute
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),

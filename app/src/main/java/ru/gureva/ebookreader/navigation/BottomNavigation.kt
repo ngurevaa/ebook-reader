@@ -13,13 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 
 enum class BottomDestinations(
     val route: Any,
     val icon: ImageVector
 ) {
-    BOOK_LIST(route = "", icon = Icons.Filled.Book),
+    BOOK_LIST(route = BookListRoute, icon = Icons.Filled.Book),
     BOOK_UPLOAD(route = BookUploadRoute, icon = Icons.Filled.Upload),
     PROFILE(route = "", icon = Icons.Filled.Home)
 }

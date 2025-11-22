@@ -26,7 +26,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -36,7 +35,6 @@ import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
 import ru.gureva.ebookreader.feature.bookupload.R
 import ru.gureva.ebookreader.feature.bookupload.constants.BookFileTypes
 
-@Preview(showBackground = true)
 @Composable
 fun BookUploadScreen(
     viewModel: BookUploadViewModel = koinViewModel()
