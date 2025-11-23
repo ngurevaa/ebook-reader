@@ -16,6 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://github.com/psiegman/mvn-repo/raw/master/releases")
+        }
     }
 }
 
@@ -36,3 +39,6 @@ include(":core:network")
 include(":feature:booklist")
 include(":feature:booklist:api")
 include(":feature:booklist:impl")
+include(":feature:reader")
+include(":feature:reader:api")
+include(":feature:reader:impl")

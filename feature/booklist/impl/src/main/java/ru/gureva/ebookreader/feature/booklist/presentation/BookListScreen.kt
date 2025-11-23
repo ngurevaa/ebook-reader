@@ -1,7 +1,6 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,54 +9,53 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.orbitmvi.orbit.compose.collectAsState
-import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
-import ru.gureva.ebookreader.feature.booklist.R
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectSideEffect
-import ru.gureva.ebookreader.feature.booklist.model.Book
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import coil3.compose.AsyncImage
+import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
 import ru.gureva.ebookreader.core.ui.noRippleClickable
-import java.nio.file.WatchEvent
+import ru.gureva.ebookreader.feature.booklist.R
+import ru.gureva.ebookreader.feature.booklist.model.Book
 
 @Composable
-fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
+fun BookListScreen(
+    navigateToBook: (String, String) -> Unit,
+    viewModel: BookListViewModel = koinViewModel()
+) {
     val state by viewModel.collectAsState()
     val dispatch = viewModel::dispatch
 
@@ -100,6 +98,7 @@ fun BookListScreen(viewModel: BookListViewModel = koinViewModel()) {
                     }
                 }
             }
+            is BookListSideEffect.NavigateToBook -> navigateToBook(it.fileName, it.title)
         }
     }
 }
@@ -142,6 +141,7 @@ internal fun BookListScreenContent(
         books = if (state.search.isEmpty()) state.books else state.searchBooks,
         onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
         onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
+        openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) },
         emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found
     )
 }
@@ -151,7 +151,8 @@ internal fun BookList(
     books: List<Book>,
     onDelete: (String) -> Unit,
     onDownload: (String) -> Unit,
-    @StringRes emptyListMessage: Int
+    openBook: (String, String) -> Unit,
+    @StringRes emptyListMessage: Int,
 ) {
     if (books.isEmpty()) {
         Text(text = stringResource(emptyListMessage))
@@ -166,7 +167,7 @@ internal fun BookList(
             items = books,
             key = { book -> book.fileName }
         ) {
-            BookItem(book = it, onDelete = onDelete, onDownload = onDownload)
+            BookItem(book = it, onDelete = onDelete, onDownload = onDownload, openBook = openBook)
         }
     }
 }
@@ -175,11 +176,13 @@ internal fun BookList(
 internal fun BookItem(
     book: Book,
     onDelete: (String) -> Unit,
-    onDownload: (String) -> Unit
+    onDownload: (String) -> Unit,
+    openBook: (String, String) -> Unit
 ) {
     Surface(
         shadowElevation = 2.dp,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.noRippleClickable { openBook(book.fileName, book.title) }
     ) {
         Row(
             modifier = Modifier
