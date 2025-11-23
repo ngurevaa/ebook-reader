@@ -5,4 +5,5 @@ sealed interface RegistrationEvent {
     data class ChangePassword(val password: String): RegistrationEvent
     data object TogglePasswordVisibility: RegistrationEvent
     data object SignUp : RegistrationEvent
+    data object ClickToLogin : RegistrationEvent
 }

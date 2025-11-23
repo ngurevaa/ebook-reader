@@ -37,6 +37,7 @@ import ru.gureva.ebookreader.feature.auth.presentation.common.PasswordField
 @Composable
 fun LoginScreen(
     navigateToRegistration: () -> Unit,
+    navigateToBookList: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -46,7 +47,9 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = { LoginTopAppBar(navigateToRegistration) },
+        topBar = { LoginTopAppBar(
+            clickToRegistration = { dispatch(LoginEvent.ClickToRegistration) }
+        ) },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
         Column(
@@ -78,6 +81,9 @@ fun LoginScreen(
                     }
                 }
             }
+
+            LoginSideEffect.NavigateToBookList -> navigateToBookList()
+            LoginSideEffect.NavigateToRegistration -> navigateToRegistration()
         }
     }
 }
@@ -85,7 +91,7 @@ fun LoginScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginTopAppBar(
-    navigateToRegistration: () -> Unit
+    clickToRegistration: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -95,7 +101,7 @@ internal fun LoginTopAppBar(
             )
         },
         actions = {
-            Button(onClick = { navigateToRegistration() }) {
+            Button(onClick = { clickToRegistration() }) {
                 Text(text = stringResource(R.string.registration))
             }
         }

@@ -1,5 +1,6 @@
 package ru.gureva.ebookreader.navigation
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
@@ -40,9 +41,11 @@ fun BottomNavigationBar(navController: NavHostController) {
 
     NavigationBar(
         modifier = Modifier
-            .shadow(
-                shape = RoundedCornerShape(32.dp),
-                elevation = 64.dp
+            .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.secondary,
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
             )
     ) {
         BottomDestinations.entries.forEach { destination ->

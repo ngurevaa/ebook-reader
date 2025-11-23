@@ -1,5 +1,9 @@
 package ru.gureva.ebookreader.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
@@ -27,20 +31,36 @@ fun NavigationHost(
         startDestination = startDestination,
         navController = navController
     ) {
-        composable<LoginRoute> {
+        composable<LoginRoute>(
+            enterTransition = { fadeIn(animationSpec = tween(durationMillis = 500)) },
+            exitTransition = { fadeOut(animationSpec = tween(durationMillis = 500)) }
+        ) {
             LoginScreen(
                 navigateToRegistration = {
                     navController.navigate(RegistrationRoute) {
+                        popUpTo(0)
+                    }
+                },
+                navigateToBookList = {
+                    navController.navigate(BookListRoute) {
                         popUpTo(0)
                     }
                 }
             )
         }
 
-        composable<RegistrationRoute> {
+        composable<RegistrationRoute>(
+            enterTransition = { fadeIn(animationSpec = tween(durationMillis = 500)) },
+            exitTransition = { fadeOut(animationSpec = tween(durationMillis = 500)) }
+        ) {
             RegistrationScreen(
                 navigateToLogin = {
                     navController.navigate(LoginRoute) {
+                        popUpTo(0)
+                    }
+                },
+                navigateToBookList = {
+                    navController.navigate(BookListRoute) {
                         popUpTo(0)
                     }
                 }

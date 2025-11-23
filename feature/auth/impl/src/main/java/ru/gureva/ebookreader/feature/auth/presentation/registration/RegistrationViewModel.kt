@@ -31,7 +31,12 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
             is RegistrationEvent.ChangePassword -> onPasswordChange(event.password)
             RegistrationEvent.TogglePasswordVisibility -> onPasswordVisibilityChange()
             RegistrationEvent.SignUp -> signUp()
+            RegistrationEvent.ClickToLogin -> clickToLogin()
         }
+    }
+
+    private fun clickToLogin() = intent {
+        postSideEffect(RegistrationSideEffect.NavigateToLogin)
     }
 
     private fun signUp() = intent {
