@@ -78,5 +78,17 @@
 <p>
   <img width="30%" alt="Screenshot_2025-11-23-19-46-11-179_ru gureva ebookreader" src="https://github.com/user-attachments/assets/066895da-86a4-4db6-ab98-5e1821203830" />
   <img width="30%" alt="Screenshot_2025-11-23-19-46-18-920_ru gureva ebookreader" src="https://github.com/user-attachments/assets/69c75ca2-0a79-4a89-b458-7c60f9fc00c2" />
-
 </p>
+
+### Гугл диск со всеми скринкастами и скриншотами
+https://drive.google.com/drive/folders/1WbGeX7WwV3KG0LoORU80L9vNwvBZOHPk?usp=sharing
+
+Запуск проекта:
+1. Создать проект в Firebase Console
+2. Добавить Android приложение
+3. Скачать google-services.json и разместить в app/
+4. Включить Firebase Authentication(Email/Password) и Firestore
+5. Создать проект в Supabase
+6. В Supabase Storage создать bucket 'books' и настроить к нему публичный доступ для чтения/изменения хранилища
+7. Создать файл secrets.properties в core/network/ и добавить ключи SUPABASE_URL и SUPABASE_KEY из настроек проекта
+8. Готово!
