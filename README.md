@@ -83,7 +83,7 @@
 ### Гугл диск со всеми скринкастами и скриншотами
 https://drive.google.com/drive/folders/1WbGeX7WwV3KG0LoORU80L9vNwvBZOHPk?usp=sharing
 
-Запуск проекта:
+## Запуск проекта:
 1. Создать проект в Firebase Console
 2. Добавить Android приложение
 3. Скачать google-services.json и разместить в app/
