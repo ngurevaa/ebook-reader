@@ -1,5 +1,8 @@
 package ru.gureva.ebookreader.feature.profile.presentation
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,13 +23,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -33,6 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
+import ru.gureva.ebookreader.core.ui.noRippleClickable
 import ru.gureva.ebookreader.feature.profile.R
 
 @Composable
@@ -73,6 +85,13 @@ internal fun ProfileScreenContent(
     state: ProfileState,
     dispatch: (ProfileEvent) -> Unit
 ) {
+    var showImagePicker by remember { mutableStateOf(false) }
+
+    if (showImagePicker) ImagePicker(onImageSelected = {
+        showImagePicker = false
+        dispatch(ProfileEvent.SelectImage(it))
+    })
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -84,11 +103,19 @@ internal fun ProfileScreenContent(
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(20.dp))
+
         AsyncImage(
-            model = R.drawable.user_placeholder,
+            model = if (state.imageUrl.isNotEmpty()) state.imageUrl else R.drawable.user_placeholder,
             contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .size(175.dp)
+                .clip(CircleShape)
+                .align(Alignment.CenterHorizontally)
+                .noRippleClickable { if (state.isEditMode) showImagePicker = true },
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(R.drawable.user_placeholder)
         )
+
         Spacer(modifier = Modifier.height(20.dp))
         UsernameField(state, dispatch)
         Spacer(modifier = Modifier.height(12.dp))
@@ -103,6 +130,21 @@ internal fun ProfileScreenContent(
         Spacer(modifier = Modifier.height(8.dp))
         LogoutButton(onClick = { dispatch(ProfileEvent.Logout) })
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+internal fun ImagePicker(
+    onImageSelected: (Uri) -> Unit
+) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let { onImageSelected(it) }
+    }
+
+    LaunchedEffect(Unit) {
+        launcher.launch("image/*")
     }
 }
 
