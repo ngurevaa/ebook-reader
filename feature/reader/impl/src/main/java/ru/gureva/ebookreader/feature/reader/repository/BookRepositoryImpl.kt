@@ -12,4 +12,10 @@ class BookRepositoryImpl(
             localBookDataSource.readTxt(fileName)
         }
     }
+
+    override suspend fun readEpub(fileName: String): String {
+        return withContext(Dispatchers.IO) {
+            localBookDataSource.readEpub(fileName)
+        }
+    }
 }

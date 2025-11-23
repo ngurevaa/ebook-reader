@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -47,6 +49,11 @@ dependencies {
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.compose)
+
+    implementation(libs.epublib) {
+        exclude(group = "org.slf4j")
+        exclude(group = "xmlpull")
+    }
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

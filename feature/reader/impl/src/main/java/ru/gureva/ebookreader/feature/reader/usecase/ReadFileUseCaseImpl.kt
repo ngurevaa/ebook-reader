@@ -1,6 +1,5 @@
 package ru.gureva.ebookreader.feature.reader.usecase
 
-import android.util.Log
 import ru.gureva.ebookreader.feature.reader.repository.BookRepository
 
 class ReadFileUseCaseImpl(
@@ -10,6 +9,9 @@ class ReadFileUseCaseImpl(
         return when (fileName.substringAfterLast('.')) {
             "txt" -> {
                 bookRepository.readTxt(fileName)
+            }
+            "epub" -> {
+                bookRepository.readEpub(fileName)
             }
             else -> ""
         }

@@ -23,6 +23,7 @@ appcompatVersion = "1.7.1"
 materialVersion = "1.13.0"
 ktor = "3.0.0"
 coil = "3.0.0"
+epublib = "3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +70,8 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versi
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+
+epublib = { group = "nl.siegmann.epublib", name = "epublib-core", version.ref = "epublib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
