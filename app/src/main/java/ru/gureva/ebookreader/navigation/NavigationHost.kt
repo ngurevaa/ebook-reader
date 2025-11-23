@@ -13,6 +13,8 @@ import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
 import ru.gureva.ebookreader.feature.booklist.presentation.BookListScreen
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.feature.bookupload.presentation.BookUploadScreen
+import ru.gureva.ebookreader.feature.profile.navigation.ProfileRoute
+import ru.gureva.ebookreader.feature.profile.presentation.ProfileScreen
 import ru.gureva.ebookreader.feature.reader.navigation.ReaderRoute
 import ru.gureva.ebookreader.feature.reader.presentation.ui.ReaderScreen
 
@@ -67,6 +69,16 @@ fun NavigationHost(
                 title = title,
                 navigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable<ProfileRoute> {
+            ProfileScreen(
+                navigateToLogin = {
+                    navController.navigate(LoginRoute) {
+                        popUpTo(0)
+                    }
                 }
             )
         }

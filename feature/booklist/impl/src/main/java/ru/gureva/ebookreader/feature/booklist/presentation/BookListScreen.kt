@@ -1,6 +1,7 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -109,6 +112,7 @@ internal fun BookListScreenContent(
     dispatch: (BookListEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
 
     Spacer(modifier = Modifier.height(24.dp))
     Text(
@@ -134,7 +138,10 @@ internal fun BookListScreenContent(
                     }
                 )
             }
-        }
+        },
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .focusable()
     )
     Spacer(modifier = Modifier.height(16.dp))
     BookList(

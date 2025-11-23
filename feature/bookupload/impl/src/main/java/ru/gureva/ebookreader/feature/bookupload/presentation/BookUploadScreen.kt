@@ -3,6 +3,7 @@ package ru.gureva.ebookreader.feature.bookupload.presentation
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -87,6 +90,8 @@ internal fun BookUploadScreenContent(
     state: BookUploadState,
     dispatch: (BookUploadEvent) -> Unit
 ) {
+    val focusRequester = remember { FocusRequester() }
+
     Spacer(modifier = Modifier.height(24.dp))
     Text(
         text = stringResource(R.string.book_upload),
@@ -108,7 +113,10 @@ internal fun BookUploadScreenContent(
         onValueChange = { dispatch(BookUploadEvent.ChangeBookName(it)) },
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next
-        )
+        ),
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .focusable()
     )
     Spacer(modifier = Modifier.height(32.dp))
     Text(

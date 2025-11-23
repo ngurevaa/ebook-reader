@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.gureva.ebookreader.core.ui.noRippleClickable
 import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
+import ru.gureva.ebookreader.feature.profile.navigation.ProfileRoute
 
 enum class BottomDestinations(
     val route: Any,
@@ -28,7 +30,7 @@ enum class BottomDestinations(
 ) {
     BOOK_LIST(route = BookListRoute, icon = Icons.Filled.Book),
     BOOK_UPLOAD(route = BookUploadRoute, icon = Icons.Filled.Upload),
-    PROFILE(route = "", icon = Icons.Filled.Home)
+    PROFILE(route = ProfileRoute, icon = Icons.Filled.Home)
 }
 
 @Composable
@@ -39,11 +41,9 @@ fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
         modifier = Modifier
             .shadow(
-                elevation = 32.dp,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                clip = false
+                shape = RoundedCornerShape(32.dp),
+                elevation = 64.dp
             )
-            .clip(shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
     ) {
         BottomDestinations.entries.forEach { destination ->
             val isSelected = currentRoute == destination.route.toString()
@@ -57,7 +57,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         imageVector = destination.icon,
                         contentDescription = null,
                         tint = if (isSelected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.secondary,
+                        else MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.noRippleClickable {
                             if (!isSelected) {
                                 navController.navigate(destination.route) {
