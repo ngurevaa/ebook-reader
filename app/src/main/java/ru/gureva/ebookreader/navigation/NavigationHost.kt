@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import ru.gureva.ebookreader.feature.auth.navigation.LoginRoute
 import ru.gureva.ebookreader.feature.auth.navigation.RegistrationRoute
 import ru.gureva.ebookreader.feature.auth.presentation.login.LoginScreen
@@ -12,6 +13,8 @@ import ru.gureva.ebookreader.feature.booklist.navigation.BookListRoute
 import ru.gureva.ebookreader.feature.booklist.presentation.BookListScreen
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.feature.bookupload.presentation.BookUploadScreen
+import ru.gureva.ebookreader.feature.reader.navigation.ReaderRoute
+import ru.gureva.ebookreader.feature.reader.presentation.ReaderScreen
 
 @Composable
 fun NavigationHost(
@@ -47,7 +50,18 @@ fun NavigationHost(
         }
 
         composable<BookListRoute> {
-            BookListScreen()
+            BookListScreen(
+                navigateToBook = {
+                    navController.navigate(ReaderRoute(it)) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable<ReaderRoute> { backStackEntry ->
+            val fileName = backStackEntry.toRoute<ReaderRoute>().fileName
+            ReaderScreen(fileName)
         }
     }
 }

@@ -8,6 +8,7 @@ import ru.gureva.ebookreader.core.util.utilModule
 import ru.gureva.ebookreader.feature.auth.authModule
 import ru.gureva.ebookreader.feature.booklist.bookListModule
 import ru.gureva.ebookreader.feature.bookupload.bookUploadModule
+import ru.gureva.ebookreader.feature.reader.readerModule
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -20,7 +21,8 @@ class MainApplication : Application() {
                 utilModule,
                 bookUploadModule,
                 networkModule,
-                bookListModule
+                bookListModule,
+                readerModule
             )
         }
     }

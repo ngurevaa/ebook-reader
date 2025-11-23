@@ -28,7 +28,12 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
             is BookListEvent.DeleteBook -> deleteBook(event.fileName)
             is BookListEvent.DownloadBook -> downloadBook(event.fileUrl)
             is BookListEvent.SearchBooks -> searchBooks(event.search)
+            is BookListEvent.OpenBook -> openBook(event.fileName)
         }
+    }
+
+    private fun openBook(fileName: String) = intent {
+        postSideEffect(BookListSideEffect.NavigateToBook(fileName))
     }
 
     private fun searchBooks(search: String) = intent {

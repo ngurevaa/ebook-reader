@@ -50,6 +50,8 @@ dependencies {
     implementation(project(":feature:bookupload:impl"))
     implementation(project(":feature:booklist:api"))
     implementation(project(":feature:booklist:impl"))
+    implementation(project(":feature:reader:api"))
+    implementation(project(":feature:reader:impl"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
