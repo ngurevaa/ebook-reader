@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logout_error">Произошла ошибка во время выхода из аккаунта. Попробуйте позднее</string>
+    <string name="data_loading_error">Произошла ошибка загрузки файлов. Попробуйте позднее</string>
+    <string name="data_updating_error">Произошла ошибка обновления данных. Попробуйте позднее</string>
+    <string name="profile">Профиль</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="edit_profile">Редактировать аккаунт</string>
+    <string name="log_out">Выйти из аккаунта</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+</resources>

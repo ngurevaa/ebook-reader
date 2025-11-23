@@ -9,6 +9,7 @@ import ru.gureva.ebookreader.core.util.utilModule
 import ru.gureva.ebookreader.feature.auth.authModule
 import ru.gureva.ebookreader.feature.booklist.bookListModule
 import ru.gureva.ebookreader.feature.bookupload.bookUploadModule
+import ru.gureva.ebookreader.feature.profile.profileModule
 import ru.gureva.ebookreader.feature.reader.readerModule
 
 class MainApplication : Application() {
@@ -25,7 +26,8 @@ class MainApplication : Application() {
                 bookUploadModule,
                 networkModule,
                 bookListModule,
-                readerModule
+                readerModule,
+                profileModule
             )
         }
     }

@@ -27,6 +27,7 @@ fun CustomTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable () -> Unit = {},
     placeholder: String = "",
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     BasicTextField(
@@ -64,6 +65,7 @@ fun CustomTextField(
             color = MaterialTheme.colorScheme.onSurface
         ),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        enabled = enabled,
         modifier = modifier
     )
 }
