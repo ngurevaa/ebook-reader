@@ -16,7 +16,7 @@ import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.SignUpUseCase
 import kotlin.getValue
 
-class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEffect>, ViewModel(), KoinComponent {
+class RegistrationViewModel : ContainerHost<RegistrationState, RegistrationSideEffect>, ViewModel(), KoinComponent {
     override val container = container<RegistrationState, RegistrationSideEffect>(RegistrationState())
 
     private val resourceManager: ResourceManager by inject()
@@ -31,7 +31,12 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
             is RegistrationEvent.ChangePassword -> onPasswordChange(event.password)
             RegistrationEvent.TogglePasswordVisibility -> onPasswordVisibilityChange()
             RegistrationEvent.SignUp -> signUp()
+            RegistrationEvent.ClickToLogin -> clickToLogin()
         }
+    }
+
+    private fun clickToLogin() = intent {
+        postSideEffect(RegistrationSideEffect.NavigateToLogin)
     }
 
     private fun signUp() = intent {
@@ -48,7 +53,7 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
         }
             .onSuccess {
                 reduce { state.copy(isLoading = false) }
-                // navigate to main screen
+                postSideEffect(RegistrationSideEffect.NavigateToBookList)
             }
             .onFailure { ex ->
                 reduce { state.copy(isLoading = false) }

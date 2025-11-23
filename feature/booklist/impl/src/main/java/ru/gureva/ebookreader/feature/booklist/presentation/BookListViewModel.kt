@@ -90,12 +90,14 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
             ?: return@intent
 
         runCatching {
+            reduce { state.copy(isLoading = true) }
             getAllBooksUseCase(userId)
         }
             .onSuccess {
-                reduce { state.copy(books = it) }
+                reduce { state.copy(books = it, isLoading = false) }
             }
             .onFailure {
+                reduce { state.copy(isLoading = false) }
                 postSideEffect(BookListSideEffect.ShowSnackbarWithRetryButton(
                     resourceManager.getString(R.string.book_loading_error)
                 ))

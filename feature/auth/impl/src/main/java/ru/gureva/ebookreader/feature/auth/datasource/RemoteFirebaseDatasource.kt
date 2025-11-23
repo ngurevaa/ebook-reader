@@ -5,11 +5,13 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.tasks.await
 
 class RemoteFirebaseDatasource {
+    val auth = Firebase.auth
+
     suspend fun createUserWithEmailAndPassword(email: String, password: String) {
-        Firebase.auth.createUserWithEmailAndPassword(email, password).await()
+        auth.createUserWithEmailAndPassword(email, password).await()
     }
 
     suspend fun signInWithEmailAndPassword(email: String, password: String) {
-        Firebase.auth.signInWithEmailAndPassword(email, password).await()
+        auth.signInWithEmailAndPassword(email, password).await()
     }
 }
