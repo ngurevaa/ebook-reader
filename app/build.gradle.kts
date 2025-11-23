@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":core:network"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
     implementation(project(":feature:bookupload:api"))
@@ -62,6 +63,8 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.compose.icons.extended)
+
+    implementation(libs.pdf.box)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

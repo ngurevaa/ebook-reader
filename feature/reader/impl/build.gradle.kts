@@ -54,6 +54,7 @@ dependencies {
         exclude(group = "org.slf4j")
         exclude(group = "xmlpull")
     }
+    implementation(libs.pdf.box)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

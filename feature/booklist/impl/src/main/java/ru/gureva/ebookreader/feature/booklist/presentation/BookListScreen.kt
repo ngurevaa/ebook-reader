@@ -53,7 +53,7 @@ import ru.gureva.ebookreader.feature.booklist.model.Book
 
 @Composable
 fun BookListScreen(
-    navigateToBook: (String) -> Unit,
+    navigateToBook: (String, String) -> Unit,
     viewModel: BookListViewModel = koinViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -98,7 +98,7 @@ fun BookListScreen(
                     }
                 }
             }
-            is BookListSideEffect.NavigateToBook -> navigateToBook(it.fileName)
+            is BookListSideEffect.NavigateToBook -> navigateToBook(it.fileName, it.title)
         }
     }
 }
@@ -141,7 +141,7 @@ internal fun BookListScreenContent(
         books = if (state.search.isEmpty()) state.books else state.searchBooks,
         onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
         onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
-        openBook = { dispatch(BookListEvent.OpenBook(it)) },
+        openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) },
         emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found
     )
 }
@@ -151,7 +151,7 @@ internal fun BookList(
     books: List<Book>,
     onDelete: (String) -> Unit,
     onDownload: (String) -> Unit,
-    openBook: (String) -> Unit,
+    openBook: (String, String) -> Unit,
     @StringRes emptyListMessage: Int,
 ) {
     if (books.isEmpty()) {
@@ -177,12 +177,12 @@ internal fun BookItem(
     book: Book,
     onDelete: (String) -> Unit,
     onDownload: (String) -> Unit,
-    openBook: (String) -> Unit
+    openBook: (String, String) -> Unit
 ) {
     Surface(
         shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.noRippleClickable { openBook(book.fileName) }
+        modifier = Modifier.noRippleClickable { openBook(book.fileName, book.title) }
     ) {
         Row(
             modifier = Modifier

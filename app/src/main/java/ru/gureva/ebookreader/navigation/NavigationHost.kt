@@ -14,7 +14,7 @@ import ru.gureva.ebookreader.feature.booklist.presentation.BookListScreen
 import ru.gureva.ebookreader.feature.bookupload.navigation.BookUploadRoute
 import ru.gureva.ebookreader.feature.bookupload.presentation.BookUploadScreen
 import ru.gureva.ebookreader.feature.reader.navigation.ReaderRoute
-import ru.gureva.ebookreader.feature.reader.presentation.ReaderScreen
+import ru.gureva.ebookreader.feature.reader.presentation.ui.ReaderScreen
 
 @Composable
 fun NavigationHost(
@@ -51,8 +51,8 @@ fun NavigationHost(
 
         composable<BookListRoute> {
             BookListScreen(
-                navigateToBook = {
-                    navController.navigate(ReaderRoute(it)) {
+                navigateToBook = { fileName, title ->
+                    navController.navigate(ReaderRoute(fileName, title)) {
                         launchSingleTop = true
                     }
                 }
@@ -61,7 +61,14 @@ fun NavigationHost(
 
         composable<ReaderRoute> { backStackEntry ->
             val fileName = backStackEntry.toRoute<ReaderRoute>().fileName
-            ReaderScreen(fileName)
+            val title = backStackEntry.toRoute<ReaderRoute>().title
+            ReaderScreen(
+                fileName = fileName,
+                title = title,
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

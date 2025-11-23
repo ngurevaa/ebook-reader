@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ReaderRoute(
-    val fileName: String
+    val fileName: String,
+    val title: String
 )
