@@ -53,7 +53,7 @@ class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEf
         }
             .onSuccess {
                 reduce { state.copy(isLoading = false) }
-                // navigate to main screen
+                postSideEffect(RegistrationSideEffect.NavigateToBookList)
             }
             .onFailure { ex ->
                 reduce { state.copy(isLoading = false) }

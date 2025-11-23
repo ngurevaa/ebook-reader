@@ -29,7 +29,6 @@ internal fun PasswordField(
     onPasswordVisibilityChange: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
 
     CustomTextField(
         value = password,
@@ -54,9 +53,6 @@ internal fun PasswordField(
                 contentDescription = null,
                 modifier = Modifier.noRippleClickable { onPasswordVisibilityChange() }
             )
-        },
-        modifier = Modifier
-            .focusRequester(focusRequester)
-            .focusable()
+        }
     )
 }

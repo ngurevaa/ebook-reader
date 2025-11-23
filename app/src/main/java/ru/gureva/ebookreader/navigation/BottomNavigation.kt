@@ -44,7 +44,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
             )
     ) {

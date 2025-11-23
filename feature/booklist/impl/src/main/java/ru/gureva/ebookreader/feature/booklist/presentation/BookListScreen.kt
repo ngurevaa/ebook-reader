@@ -149,7 +149,8 @@ internal fun BookListScreenContent(
         onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
         onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
         openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) },
-        emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found
+        emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found,
+        isLoading = state.isLoading
     )
 }
 
@@ -160,7 +161,19 @@ internal fun BookList(
     onDownload: (String) -> Unit,
     openBook: (String, String) -> Unit,
     @StringRes emptyListMessage: Int,
+    isLoading: Boolean
 ) {
+    if (isLoading) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        return
+    }
     if (books.isEmpty()) {
         Text(text = stringResource(emptyListMessage))
         return
