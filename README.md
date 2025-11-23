@@ -5,6 +5,7 @@
 * Kotlin
 * Jetpack Compose
 * Clean Architecture + MVI(Orbit)
+* Koin
 * Firebase Authentication
 * Firebase Firestore
 * Supabase Storage
