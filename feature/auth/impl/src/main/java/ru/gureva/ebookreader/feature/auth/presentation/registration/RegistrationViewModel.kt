@@ -16,7 +16,7 @@ import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.SignUpUseCase
 import kotlin.getValue
 
-class RegistrationViewModel: ContainerHost<RegistrationState, RegistrationSideEffect>, ViewModel(), KoinComponent {
+class RegistrationViewModel : ContainerHost<RegistrationState, RegistrationSideEffect>, ViewModel(), KoinComponent {
     override val container = container<RegistrationState, RegistrationSideEffect>(RegistrationState())
 
     private val resourceManager: ResourceManager by inject()

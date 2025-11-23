@@ -15,7 +15,7 @@ import ru.gureva.ebookreader.feature.auth.usecase.CheckEmailValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.CheckPasswordValidityUseCase
 import ru.gureva.ebookreader.feature.auth.usecase.SignInUseCase
 
-class LoginViewModel: ContainerHost<LoginState, LoginSideEffect>, ViewModel(), KoinComponent {
+class LoginViewModel : ContainerHost<LoginState, LoginSideEffect>, ViewModel(), KoinComponent {
     override val container = container<LoginState, LoginSideEffect>(LoginState())
 
     private val resourceManager: ResourceManager by inject()

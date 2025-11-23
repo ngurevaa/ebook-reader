@@ -71,6 +71,7 @@ internal fun SettingsBottomSheet(
                     scrollState.value.toFloat() / scrollState.maxValue
                 } else 0f
             )
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
