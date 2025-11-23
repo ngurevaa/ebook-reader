@@ -71,13 +71,15 @@
 
 ### Экран профиля
 * Просмотр базовой информации об аккаунте в Firebase Authentication
-* Редактирование имени пользователя и почты
+* Редактирование имени пользователя, почты и изображения
 * Выход из аккаунта
+* Загрузка изображения в Supabase Storage
 
 Скринкаст: https://github.com/user-attachments/assets/53aa37f5-2c2c-45ea-b612-aa480df1e853
 <p>
   <img width="30%" alt="Screenshot_2025-11-23-19-46-11-179_ru gureva ebookreader" src="https://github.com/user-attachments/assets/066895da-86a4-4db6-ab98-5e1821203830" />
   <img width="30%" alt="Screenshot_2025-11-23-19-46-18-920_ru gureva ebookreader" src="https://github.com/user-attachments/assets/69c75ca2-0a79-4a89-b458-7c60f9fc00c2" />
+  <img width="30%" alt="Screenshot_2025-11-23-21-34-24-820_ru gureva ebookreader" src="https://github.com/user-attachments/assets/fbdf2191-8cb5-40ce-bc86-2843e03e51af" />
 </p>
 
 ### Гугл диск со всеми скринкастами и скриншотами
