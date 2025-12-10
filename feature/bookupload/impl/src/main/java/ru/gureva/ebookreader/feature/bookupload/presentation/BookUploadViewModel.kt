@@ -12,8 +12,6 @@ import ru.gureva.ebookreader.core.util.FileUtil
 import ru.gureva.ebookreader.core.util.NetworkUtil
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.bookupload.R
-import ru.gureva.ebookreader.feature.bookupload.exception.EmptyFileException
-import ru.gureva.ebookreader.feature.bookupload.exception.NotAuthenticatedException
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
 
@@ -42,17 +40,14 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
             return@intent
         }
 
-        val uri = state.fileUri ?: return@intent
-        val bookBytes = fileUtil.getFileBytesFromUri(uri)
-            ?: throw EmptyFileException()
-        val userId = Firebase.auth.currentUser?.uid
-            ?: throw NotAuthenticatedException()
+        val file = fileUtil.copyUriToTempFile(state.fileUri!!)
+        val userId = Firebase.auth.currentUser?.uid!!
 
         runCatching {
             reduce { state.copy(isLoading = true) }
             uploadBookUseCase(
                 BookMetadata(
-                    data = bookBytes,
+                    filePath = file.absolutePath,
                     fileName = state.fileName ?: "",
                     title = state.bookName,
                     author = state.bookAuthor,

@@ -3,6 +3,8 @@ package ru.gureva.ebookreader.core.util
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import java.io.File
+import java.io.FileOutputStream
 
 class FileUtil(
     private val context: Context
@@ -17,5 +19,13 @@ class FileUtil(
 
     fun getFileBytesFromUri(uri: Uri): ByteArray? {
         return context.contentResolver.openInputStream(uri)?.readBytes()
+    }
+
+    fun copyUriToTempFile(uri: Uri): File {
+        val tempFile = File(context.cacheDir, "${System.currentTimeMillis()}")
+        context.contentResolver.openInputStream(uri)?.use { input ->
+            FileOutputStream(tempFile).use { output -> input.copyTo(output) }
+        }
+        return tempFile
     }
 }

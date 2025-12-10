@@ -13,15 +13,24 @@ class BookRepositoryImpl(
     private val remoteFirestoreDatasource: RemoteFirestoreDataSource,
     private val localBookDatasource: LocalBookDataSource
 ) : BookRepository {
-    override suspend fun uploadBook(bookMetadata: BookMetadata) {
+    override suspend fun uploadBookToRemoteStorage(bookMetadata: BookMetadata): String {
+        return withContext(Dispatchers.IO) {
+            remoteSupabaseDatasource.uploadBookToStorage(bookMetadata)
+        }
+    }
+
+    override suspend fun saveBookMetadataToRemoteStorage(bookMetadata: BookMetadata, fileUrl: String) {
         withContext(Dispatchers.IO) {
-            val fileUrl = remoteSupabaseDatasource.uploadBookToStorage(bookMetadata)
-
             remoteFirestoreDatasource.saveBookMetadata(
-                FirestoreBookMetadata(bookMetadata.title, bookMetadata.author, fileUrl, bookMetadata.userId)
+                bookMetadata.userId,
+                FirestoreBookMetadata(bookMetadata.title, bookMetadata.author, fileUrl)
             )
+        }
+    }
 
-            localBookDatasource.saveBook(bookMetadata.data, fileUrl.substringAfterLast('/'))
+    override suspend fun saveBookToLocalStorage(bookMetadata: BookMetadata, fileUrl: String) {
+        withContext(Dispatchers.IO) {
+            localBookDatasource.saveBook(bookMetadata, fileUrl.substringAfterLast('/'))
         }
     }
 }
