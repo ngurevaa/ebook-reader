@@ -1,9 +1,17 @@
 package ru.gureva.ebookreader.feature.bookupload.presentation
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.orbitmvi.orbit.ContainerHost
@@ -12,8 +20,10 @@ import ru.gureva.ebookreader.core.util.FileUtil
 import ru.gureva.ebookreader.core.util.NetworkUtil
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.bookupload.R
+import ru.gureva.ebookreader.feature.bookupload.background.BookUploadWorker
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
+import java.util.UUID
 
 class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>, ViewModel(), KoinComponent {
     override val container = container<BookUploadState, BookUploadSideEffect>(BookUploadState())
@@ -21,7 +31,7 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
     private val fileUtil: FileUtil by inject()
     private val networkUtil: NetworkUtil by inject()
     private val resourceManager: ResourceManager by inject()
-    private val uploadBookUseCase: UploadBookUseCase by inject()
+    private val context: Context by inject()
 
     fun dispatch(event: BookUploadEvent) {
         when (event) {
@@ -39,33 +49,51 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
             )
             return@intent
         }
+        reduce { state.copy(isLoading = true) }
 
         val file = fileUtil.copyUriToTempFile(state.fileUri!!)
         val userId = Firebase.auth.currentUser?.uid!!
 
-        runCatching {
-            reduce { state.copy(isLoading = true) }
-            uploadBookUseCase(
-                BookMetadata(
-                    filePath = file.absolutePath,
-                    fileName = state.fileName ?: "",
-                    title = state.bookName,
-                    author = state.bookAuthor,
-                    userId = userId
-            )
-        ) }
-            .onSuccess {
-                reduce { state.copy(isLoading = false) }
-                postSideEffect(BookUploadSideEffect.ShowSnackbar(
-                    resourceManager.getString(R.string.book_downloaded_successfully)
-                ))
-            }
-            .onFailure {
-                reduce { state.copy(isLoading = false) }
-                postSideEffect(BookUploadSideEffect.ShowSnackbarWithRetryButton(
-                    resourceManager.getString(R.string.download_error))
-                )
-            }
+        val data = workDataOf(
+            "filePath" to file.absolutePath,
+            "fileName" to state.fileName,
+            "title" to state.bookName,
+            "author" to state.bookAuthor,
+            "userId" to userId,
+        )
+        val request = OneTimeWorkRequestBuilder<BookUploadWorker>()
+            .setInputData(data)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(request)
+        observeWork(request.id)
+    }
+
+    private fun observeWork(workId: UUID) {
+        viewModelScope.launch {
+            WorkManager
+                .getInstance(context)
+                .getWorkInfoByIdFlow(workId)
+                .collect { info ->
+                    when (info?.state) {
+                        WorkInfo.State.SUCCEEDED -> intent {
+                            reduce { state.copy(isLoading = false) }
+                            postSideEffect(BookUploadSideEffect.ShowSnackbar(
+                                resourceManager.getString(R.string.book_downloaded_successfully)
+                            ))
+                        }
+
+                        WorkInfo.State.FAILED -> intent {
+                            reduce { state.copy(isLoading = false) }
+                            postSideEffect(BookUploadSideEffect.ShowSnackbar(
+                                resourceManager.getString(R.string.download_error)
+                            ))
+                        }
+
+                        else -> Unit
+                    }
+                }
+        }
     }
 
     private fun changeBookAuthor(author: String) = intent {

@@ -26,6 +26,7 @@ coil = "3.0.0"
 epublib = "3.1"
 pdf-box = "2.0.27.0"
 coroutines = "1.10.2"
+work-manager = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serializ
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin-bom" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-work-manager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
@@ -75,6 +77,8 @@ epublib = { group = "nl.siegmann.epublib", name = "epublib-core", version.ref = 
 pdf-box = { group = "com.tom-roush", name = "pdfbox-android", version.ref = "pdf-box" }
 
 kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+
+work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-manager" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
