@@ -21,6 +21,7 @@ import ru.gureva.ebookreader.core.util.NetworkUtil
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.bookupload.R
 import ru.gureva.ebookreader.feature.bookupload.background.BookUploadWorker
+import ru.gureva.ebookreader.feature.bookupload.constants.BookUploadWorkerParams
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
 import java.util.UUID
@@ -55,11 +56,11 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
         val userId = Firebase.auth.currentUser?.uid!!
 
         val data = workDataOf(
-            "filePath" to file.absolutePath,
-            "fileName" to state.fileName,
-            "title" to state.bookName,
-            "author" to state.bookAuthor,
-            "userId" to userId,
+            BookUploadWorkerParams.FILE_PATH to file.absolutePath,
+            BookUploadWorkerParams.FILE_NAME to state.fileName,
+            BookUploadWorkerParams.TITLE to state.bookName.trim(),
+            BookUploadWorkerParams.AUTHOR to state.bookAuthor.trim(),
+            BookUploadWorkerParams.USER_ID to userId,
         )
         val request = OneTimeWorkRequestBuilder<BookUploadWorker>()
             .setInputData(data)

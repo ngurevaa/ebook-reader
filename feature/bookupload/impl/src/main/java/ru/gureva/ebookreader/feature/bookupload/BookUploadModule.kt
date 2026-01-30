@@ -24,5 +24,5 @@ val bookUploadModule = module {
     factory { RemoteSupabaseDataSource(get()) }
     factory { RemoteFirestoreDataSource() }
 
-    worker { BookUploadWorker(get(), get(), get()) }
+    worker { BookUploadWorker(get(), get(), get(), get()) }
 }
