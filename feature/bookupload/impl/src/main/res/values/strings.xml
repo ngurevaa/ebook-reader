@@ -8,6 +8,8 @@
     <string name="selected_file">Выбранный файл</string>
     <string name="book_downloaded_successfully">Книга успешно загружена!</string>
     <string name="network_error">Нет подключения к интернету. Проверьте Wi-Fi или мобильные данные</string>
-    <string name="download_error">Произошла ошибка загрузки файла. Попробейте позднее</string>
+    <string name="download_error">Произошла ошибка загрузки файла. Попробуйте позднее</string>
     <string name="retry">Повторить</string>
+    <string name="book_uploading_notification">Идет загрузка книги...</string>
+    <string name="book_uploading_successfully_notification">Книга «%s» успешно загружена.</string>
 </resources>

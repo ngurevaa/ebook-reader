@@ -1,6 +1,9 @@
 package ru.gureva.ebookreader.feature.bookupload.presentation
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.focusable
@@ -28,9 +31,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.orbitmvi.orbit.compose.collectAsState
@@ -132,12 +137,38 @@ internal fun BookUploadScreenContent(
         )
     )
     Spacer(modifier = Modifier.height(32.dp))
+    UploadButton(
+        isLoading = state.isLoading,
+        isUploadingEnabled = state.isUploadingEnabled,
+        upload = { dispatch(BookUploadEvent.UploadBook) }
+    )
+}
+
+@Composable
+internal fun UploadButton(
+    isLoading: Boolean,
+    isUploadingEnabled: Boolean,
+    upload: () -> Unit
+) {
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) {}
+
     Button(
-        onClick = { dispatch(BookUploadEvent.UploadBook) },
+        onClick = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val permission = Manifest.permission.POST_NOTIFICATIONS
+                if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
+                    notificationPermissionLauncher.launch(permission)
+                }
+            }
+            upload()
+        },
         modifier = Modifier.fillMaxWidth(),
-        enabled = state.isUploadingEnabled
+        enabled = isUploadingEnabled
     ) {
-        if (state.isLoading) {
+        if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(24.dp)
             )

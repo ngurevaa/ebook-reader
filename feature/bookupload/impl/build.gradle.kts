@@ -42,6 +42,8 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:ui"))
 
+    implementation(libs.work.manager)
+
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.compose)
 
@@ -53,6 +55,7 @@ dependencies {
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.compose)
+    implementation(libs.koin.work.manager)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
