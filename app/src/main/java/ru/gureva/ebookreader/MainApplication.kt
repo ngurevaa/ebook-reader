@@ -8,6 +8,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import ru.gureva.ebookreader.core.network.networkModule
 import ru.gureva.ebookreader.core.util.utilModule
+import ru.gureva.ebookreader.database.databaseModule
 import ru.gureva.ebookreader.feature.auth.authModule
 import ru.gureva.ebookreader.feature.booklist.bookListModule
 import ru.gureva.ebookreader.feature.bookupload.bookUploadModule
@@ -30,7 +31,8 @@ class MainApplication : Application(), KoinComponent {
                 networkModule,
                 bookListModule,
                 readerModule,
-                profileModule
+                profileModule,
+                databaseModule
             )
         }
     }
