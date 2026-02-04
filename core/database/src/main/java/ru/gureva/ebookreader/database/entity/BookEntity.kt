@@ -7,7 +7,7 @@ import java.util.Date
 
 @Entity(tableName = "books")
 data class BookEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey val fileUrl: String,
     val title: String,
     val author: String,
     @ColumnInfo(name = "creation_date")

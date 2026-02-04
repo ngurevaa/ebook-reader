@@ -4,21 +4,19 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.storage.UploadData
 import io.github.jan.supabase.storage.storage
 import io.ktor.utils.io.jvm.javaio.toByteReadChannel
-import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import java.io.File
 import java.io.FileInputStream
+import java.util.UUID
 
 class RemoteSupabaseDataSource(
     private val supabaseClient: SupabaseClient
 ) {
-    suspend fun uploadBookToStorage(bookMetadata: BookMetadata): String {
-        val storagePath = "${bookMetadata.userId}/${System.currentTimeMillis()}${bookMetadata.fileName}"
-
-        val file = File(bookMetadata.filePath)
-
-        val size = file.length()
+    suspend fun uploadFileToStorage(userId: String, filePath: String): String {
+        val file = File(filePath)
         val stream = FileInputStream(file).toByteReadChannel()
-        val uploadData = UploadData(stream, size)
+        val uploadData = UploadData(stream, file.length())
+
+        val storagePath = "${userId}/${UUID.randomUUID()}.${file.extension}"
 
         supabaseClient.storage
             .from(STORAGE_NAME)
