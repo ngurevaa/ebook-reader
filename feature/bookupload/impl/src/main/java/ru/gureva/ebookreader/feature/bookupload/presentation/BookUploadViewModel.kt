@@ -49,7 +49,7 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
         }
         reduce { state.copy(isLoading = true) }
 
-        val file = fileUtil.copyUriToTempFile(state.fileUri!!)
+        val file = fileUtil.copyUriToTempFile(state.fileUri!!, state.fileName!!)
         val userId = Firebase.auth.currentUser?.uid!!
 
         val data = workDataOf(

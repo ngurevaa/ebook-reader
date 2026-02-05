@@ -69,9 +69,9 @@ class ReaderViewModel : ContainerHost<ReaderState, ReaderSideEffect>, ViewModel(
                 reduce { state.copy(progress = progress) }
             }
             .onFailure {
-            postSideEffect(ReaderSideEffect.ShowSnackbarWithRetryButton(
-                resourceManager.getString(R.string.file_loading_error)
-            ))
+                postSideEffect(ReaderSideEffect.ShowSnackbarWithRetryButton(
+                    resourceManager.getString(R.string.file_loading_error)
+                ))
         }
     }
 }

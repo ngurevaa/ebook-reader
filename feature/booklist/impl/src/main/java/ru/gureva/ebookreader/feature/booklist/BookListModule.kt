@@ -14,6 +14,8 @@ import ru.gureva.ebookreader.feature.booklist.usecase.DownloadBookUseCase
 import ru.gureva.ebookreader.feature.booklist.usecase.DownloadBookUseCaseImpl
 import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCase
 import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCaseImpl
+import ru.gureva.ebookreader.feature.booklist.usecase.SyncBooksUseCase
+import ru.gureva.ebookreader.feature.booklist.usecase.SyncBooksUseCaseImpl
 
 val bookListModule = module {
     viewModel { BookListViewModel() }
@@ -21,10 +23,11 @@ val bookListModule = module {
     factory<GetAllBooksUseCase> { GetAllBooksUseCaseImpl(get()) }
     factory<DeleteBookUseCase> { DeleteBookUseCaseImpl(get()) }
     factory<DownloadBookUseCase> { DownloadBookUseCaseImpl(get()) }
+    factory<SyncBooksUseCase> { SyncBooksUseCaseImpl(get()) }
 
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
 
     factory { RemoteFirestoreDataSource() }
-    factory { LocalBookDataSource(get()) }
+    factory { LocalBookDataSource(get(), get()) }
     factory { RemoteSupabaseDataSource(get()) }
 }

@@ -6,5 +6,5 @@ data class BookListState(
     val search: String = "",
     val books: List<Book> = listOf(),
     val searchBooks: List<Book> = listOf(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = false
 )

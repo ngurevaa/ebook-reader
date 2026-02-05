@@ -19,7 +19,7 @@ class LocalBookDataSource(
         tempFile.delete()
     }
 
-    fun saveBookMetadata(bookEntity: BookEntity) {
+    suspend fun saveBookMetadata(bookEntity: BookEntity) {
         bookDao.insert(bookEntity)
     }
 

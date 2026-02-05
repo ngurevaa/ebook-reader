@@ -6,7 +6,11 @@ import androidx.room.TypeConverters
 import ru.gureva.ebookreader.database.dao.BookDao
 import ru.gureva.ebookreader.database.entity.BookEntity
 
-@Database(entities = [BookEntity::class], version = 1)
+@Database(
+    entities = [BookEntity::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao

@@ -9,8 +9,8 @@ val databaseModule = module {
         Room.databaseBuilder(
             androidApplication(),
             AppDatabase::class.java,
-            ""
-        )
+            "database"
+        ).build()
     }
 
     single { get<AppDatabase>().bookDao() }

@@ -20,7 +20,7 @@ val bookUploadModule = module {
 
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
 
-    factory { LocalBookDataSource(get()) }
+    factory { LocalBookDataSource(get(), get()) }
     factory { RemoteSupabaseDataSource(get()) }
     factory { RemoteFirestoreDataSource() }
 

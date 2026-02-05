@@ -28,10 +28,10 @@ class BookRepositoryImpl(
 
     override suspend fun saveBookToLocalStorage(filePath: String, bookMetadata: BookMetadata) {
         withContext(Dispatchers.IO) {
-            localBookDatasource.saveBook(filePath, bookMetadata.fileUrl)
+            localBookDatasource.saveBook(filePath, bookMetadata.fileName)
 
             val bookEntity = BookEntity(
-                fileUrl = bookMetadata.fileUrl,
+                fileName = bookMetadata.fileName,
                 author = bookMetadata.author,
                 title = bookMetadata.title,
                 creationDate = Date()

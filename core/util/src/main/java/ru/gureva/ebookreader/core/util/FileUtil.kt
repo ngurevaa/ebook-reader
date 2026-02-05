@@ -22,8 +22,8 @@ class FileUtil(
         return context.contentResolver.openInputStream(uri)?.readBytes()
     }
 
-    fun copyUriToTempFile(uri: Uri): File {
-        val tempFile = File(context.cacheDir, "${UUID.randomUUID()}")
+    fun copyUriToTempFile(uri: Uri, fileName: String): File {
+        val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.${fileName.substringAfterLast('.')}")
         context.contentResolver.openInputStream(uri)?.use { input ->
             FileOutputStream(tempFile).use { output -> input.copyTo(output) }
         }

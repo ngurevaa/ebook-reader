@@ -10,10 +10,12 @@ class UploadBookUseCaseImpl(
     override suspend operator fun invoke(uploadBookRequest: UploadBookRequest) {
         val userId = uploadBookRequest.userId
         val fileUrl = bookRepository.uploadBookToRemoteStorage(userId, uploadBookRequest.filePath)
+
+        val fileName = fileUrl.substringAfterLast('/')
         val bookMetadata = BookMetadata(
             title = uploadBookRequest.title,
             author = uploadBookRequest.author,
-            fileUrl = fileUrl
+            fileName = fileName
         )
         bookRepository.saveBookMetadataToRemoteStorage(userId, bookMetadata)
         bookRepository.saveBookToLocalStorage(uploadBookRequest.filePath, bookMetadata)

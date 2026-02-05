@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":core:ui"))
+    implementation(project(":core:database"))
 
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.compose)
