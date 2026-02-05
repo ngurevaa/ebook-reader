@@ -10,7 +10,7 @@ fun BookEntity.mapToBook(): Book {
         fileName = fileName,
         title = title,
         author = author,
-        local = true,
+        isLocal = isLocal,
         isLoading = false
     )
 }
@@ -20,6 +20,7 @@ fun DocumentSnapshot.mapToBookEntity(): BookEntity {
         fileName = getString("fileName") ?: "",
         title = getString("title") ?: "",
         author = getString("author") ?: "",
-        creationDate = Date() // заглушка
+        creationDate = getDate("creationDate") ?: Date(),
+        isLocal = getBoolean("isLocal") ?: false
     )
 }

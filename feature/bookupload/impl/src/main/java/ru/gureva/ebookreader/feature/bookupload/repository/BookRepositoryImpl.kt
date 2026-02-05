@@ -2,12 +2,11 @@ package ru.gureva.ebookreader.feature.bookupload.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.gureva.ebookreader.database.entity.BookEntity
 import ru.gureva.ebookreader.feature.bookupload.datasource.LocalBookDataSource
 import ru.gureva.ebookreader.feature.bookupload.datasource.RemoteFirestoreDataSource
 import ru.gureva.ebookreader.feature.bookupload.datasource.RemoteSupabaseDataSource
+import ru.gureva.ebookreader.feature.bookupload.mapper.mapToBookEntity
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
-import java.util.Date
 
 class BookRepositoryImpl(
     private val remoteSupabaseDatasource: RemoteSupabaseDataSource,
@@ -29,14 +28,7 @@ class BookRepositoryImpl(
     override suspend fun saveBookToLocalStorage(filePath: String, bookMetadata: BookMetadata) {
         withContext(Dispatchers.IO) {
             localBookDatasource.saveBook(filePath, bookMetadata.fileName)
-
-            val bookEntity = BookEntity(
-                fileName = bookMetadata.fileName,
-                author = bookMetadata.author,
-                title = bookMetadata.title,
-                creationDate = Date()
-            )
-            localBookDatasource.saveBookMetadata(bookEntity)
         }
+        localBookDatasource.saveBookMetadata(bookMetadata.mapToBookEntity())
     }
 }

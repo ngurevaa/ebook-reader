@@ -27,7 +27,9 @@ class BookRepositoryImpl(
         withContext(Dispatchers.IO) {
             localBookDataSource.deleteBook(fileName)
         }
+        localBookDataSource.updateIsLocal(fileName, false)
     }
+
     override suspend fun saveBookLocal(data: ByteArray, fileName: String) {
         withContext(Dispatchers.IO) {
             localBookDataSource.saveBook(data, fileName)
@@ -47,7 +49,15 @@ class BookRepositoryImpl(
             .map { documents ->
                 documents.mapToBookEntity()
             }
-        localBookDataSource.upsertBooks(cloudBooks)
-        localBookDataSource.deleteMissingBooks(cloudBooks.map { it.fileName })
+        val localBooks = localBookDataSource.getBooksOnce()
+        val localBooksByFileName = localBooks.associateBy { it.fileName }
+
+        val mergedBooks = cloudBooks.map { cloudBook ->
+            val localVersion = localBooksByFileName[cloudBook.fileName]
+            cloudBook.copy(isLocal = localVersion?.isLocal ?: false)
+        }
+
+        localBookDataSource.upsertBooks(mergedBooks)
+        localBookDataSource.deleteMissingBooks(mergedBooks.map { it.fileName })
     }
 }

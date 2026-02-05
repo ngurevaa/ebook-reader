@@ -4,6 +4,6 @@ data class Book(
     val fileName: String,
     val title: String,
     val author: String,
-    val local: Boolean,
+    val isLocal: Boolean,
     val isLoading: Boolean = false
 )

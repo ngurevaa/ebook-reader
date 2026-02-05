@@ -193,7 +193,9 @@ internal fun BookItem(
     Surface(
         shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.noRippleClickable { openBook(book.fileName, book.title) }
+        modifier = Modifier.noRippleClickable {
+            if (book.isLocal) openBook(book.fileName, book.title)
+        }
     ) {
         Row(
             modifier = Modifier
@@ -215,7 +217,7 @@ internal fun BookItem(
                 Text(text = book.author)
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (book.local) {
+            if (book.isLocal) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = null,

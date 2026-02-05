@@ -3,6 +3,7 @@ package ru.gureva.ebookreader.feature.bookupload.usecase
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 import ru.gureva.ebookreader.feature.bookupload.model.UploadBookRequest
 import ru.gureva.ebookreader.feature.bookupload.repository.BookRepository
+import java.util.Date
 
 class UploadBookUseCaseImpl(
     private val bookRepository: BookRepository
@@ -15,7 +16,8 @@ class UploadBookUseCaseImpl(
         val bookMetadata = BookMetadata(
             title = uploadBookRequest.title,
             author = uploadBookRequest.author,
-            fileName = fileName
+            fileName = fileName,
+            creationDate = Date()
         )
         bookRepository.saveBookMetadataToRemoteStorage(userId, bookMetadata)
         bookRepository.saveBookToLocalStorage(uploadBookRequest.filePath, bookMetadata)

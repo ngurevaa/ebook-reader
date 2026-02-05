@@ -11,5 +11,7 @@ data class BookEntity(
     val title: String,
     val author: String,
     @ColumnInfo(name = "creation_date")
-    val creationDate: Date
+    val creationDate: Date,
+    @ColumnInfo(name = "is_local")
+    val isLocal: Boolean
 )

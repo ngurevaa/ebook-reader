@@ -13,6 +13,10 @@ class LocalBookDataSource(
 ) {
     fun getBooks(): Flow<List<BookEntity>> = bookDao.getAll()
 
+    suspend fun getBooksOnce(): List<BookEntity> {
+        return bookDao.getAllOnce()
+    }
+
     suspend fun upsertBooks(books: List<BookEntity>) {
         bookDao.upsertAll(books)
     }
@@ -26,6 +30,10 @@ class LocalBookDataSource(
         val fileToDelete = File(booksDir, fileName)
 
         fileToDelete.delete()
+    }
+
+    suspend fun updateIsLocal(fileName: String, isLocal: Boolean) {
+        bookDao.updateIsLocalByFileName(fileName, isLocal)
     }
 
     fun saveBook(data: ByteArray, fileName: String) {

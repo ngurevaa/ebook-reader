@@ -77,7 +77,6 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
     private fun deleteBook(fileName: String) = intent {
         runCatching { deleteBookUseCase(fileName) }
             .onSuccess {
-//                updateBookByName(fileName) { it.copy(local = false) }
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_successfully_deleted)
                 ))
@@ -108,22 +107,4 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
                 reduce { state.copy(books = books, isLoading = false) }
             }
     }
-
-//    private fun updateBookByUrl(fileUrl: String, update: (Book) -> Book) = intent {
-//        val books = state.books.toMutableList()
-//        val index = books.indexOfFirst { it.fileUrl == fileUrl }
-//        if (index != -1) {
-//            books[index] = update(books[index])
-//            reduce { state.copy(books = books) }
-//        }
-//    }
-//
-//    private fun updateBookByName(fileName: String, update: (Book) -> Book) = intent {
-//        val books = state.books.toMutableList()
-//        val index = books.indexOfFirst { it.fileName == fileName }
-//        if (index != -1) {
-//            books[index] = update(books[index])
-//            reduce { state.copy(books = books) }
-//        }
-//    }
 }
