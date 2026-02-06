@@ -14,4 +14,5 @@ kotlin {
 }
 dependencies {
     implementation(libs.serialization.json)
+    implementation(libs.kotlin.coroutines)
 }

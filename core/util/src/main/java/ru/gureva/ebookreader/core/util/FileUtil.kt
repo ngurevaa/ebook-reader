@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import java.io.File
 import java.io.FileOutputStream
+import java.util.UUID
 
 class FileUtil(
     private val context: Context
@@ -21,8 +22,8 @@ class FileUtil(
         return context.contentResolver.openInputStream(uri)?.readBytes()
     }
 
-    fun copyUriToTempFile(uri: Uri): File {
-        val tempFile = File(context.cacheDir, "${System.currentTimeMillis()}")
+    fun copyUriToTempFile(uri: Uri, fileName: String): File {
+        val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.${fileName.substringAfterLast('.')}")
         context.contentResolver.openInputStream(uri)?.use { input ->
             FileOutputStream(tempFile).use { output -> input.copyTo(output) }
         }

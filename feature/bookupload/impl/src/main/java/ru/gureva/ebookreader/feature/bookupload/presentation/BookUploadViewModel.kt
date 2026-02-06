@@ -2,7 +2,6 @@ package ru.gureva.ebookreader.feature.bookupload.presentation
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
@@ -22,8 +21,6 @@ import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.bookupload.R
 import ru.gureva.ebookreader.feature.bookupload.background.BookUploadWorker
 import ru.gureva.ebookreader.feature.bookupload.constants.BookUploadWorkerParams
-import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
-import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
 import java.util.UUID
 
 class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>, ViewModel(), KoinComponent {
@@ -52,12 +49,11 @@ class BookUploadViewModel : ContainerHost<BookUploadState, BookUploadSideEffect>
         }
         reduce { state.copy(isLoading = true) }
 
-        val file = fileUtil.copyUriToTempFile(state.fileUri!!)
+        val file = fileUtil.copyUriToTempFile(state.fileUri!!, state.fileName!!)
         val userId = Firebase.auth.currentUser?.uid!!
 
         val data = workDataOf(
             BookUploadWorkerParams.FILE_PATH to file.absolutePath,
-            BookUploadWorkerParams.FILE_NAME to state.fileName,
             BookUploadWorkerParams.TITLE to state.bookName.trim(),
             BookUploadWorkerParams.AUTHOR to state.bookAuthor.trim(),
             BookUploadWorkerParams.USER_ID to userId,

@@ -3,10 +3,10 @@ package ru.gureva.ebookreader.feature.bookupload.datasource
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
-import ru.gureva.ebookreader.feature.bookupload.model.FirestoreBookMetadata
+import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
 
 class RemoteFirestoreDataSource {
-    suspend fun saveBookMetadata(userId: String, metadata: FirestoreBookMetadata) {
+    suspend fun saveBookMetadata(userId: String, metadata: BookMetadata) {
         Firebase.firestore
             .collection(COLLECTION_NAME)
             .document(userId)

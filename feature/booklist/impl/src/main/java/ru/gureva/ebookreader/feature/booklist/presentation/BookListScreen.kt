@@ -1,6 +1,5 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -144,26 +143,7 @@ internal fun BookListScreenContent(
             .focusable()
     )
     Spacer(modifier = Modifier.height(16.dp))
-    BookList(
-        books = if (state.search.isEmpty()) state.books else state.searchBooks,
-        onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
-        onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
-        openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) },
-        emptyListMessage = if (state.search.isEmpty()) R.string.load_your_first_book else R.string.nothing_was_found,
-        isLoading = state.isLoading
-    )
-}
-
-@Composable
-internal fun BookList(
-    books: List<Book>,
-    onDelete: (String) -> Unit,
-    onDownload: (String) -> Unit,
-    openBook: (String, String) -> Unit,
-    @StringRes emptyListMessage: Int,
-    isLoading: Boolean
-) {
-    if (isLoading) {
+    if (state.isLoading) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -172,13 +152,24 @@ internal fun BookList(
                 modifier = Modifier.size(24.dp)
             )
         }
-        return
     }
-    if (books.isEmpty()) {
-        Text(text = stringResource(emptyListMessage))
-        return
+    else {
+        BookList(
+            books = if (state.search.isEmpty()) state.books else state.searchBooks,
+            onDelete = { dispatch(BookListEvent.DeleteBook(it)) },
+            onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
+            openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) }
+        )
     }
+}
 
+@Composable
+internal fun BookList(
+    books: List<Book>,
+    onDelete: (String) -> Unit,
+    onDownload: (String) -> Unit,
+    openBook: (String, String) -> Unit
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 8.dp)
@@ -202,7 +193,9 @@ internal fun BookItem(
     Surface(
         shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.noRippleClickable { openBook(book.fileName, book.title) }
+        modifier = Modifier.noRippleClickable {
+            if (book.isLocal) openBook(book.fileName, book.title)
+        }
     ) {
         Row(
             modifier = Modifier
@@ -224,7 +217,7 @@ internal fun BookItem(
                 Text(text = book.author)
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (book.local) {
+            if (book.isLocal) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = null,
@@ -241,7 +234,7 @@ internal fun BookItem(
                     imageVector = Icons.Filled.Download,
                     contentDescription = null,
                     modifier = Modifier.noRippleClickable {
-                        onDownload(book.fileUrl)
+                        onDownload(book.fileName)
                     }
                 )
             }

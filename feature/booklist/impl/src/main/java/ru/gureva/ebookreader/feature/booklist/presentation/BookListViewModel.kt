@@ -1,18 +1,21 @@
 package ru.gureva.ebookreader.feature.booklist.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.booklist.R
-import ru.gureva.ebookreader.feature.booklist.model.Book
 import ru.gureva.ebookreader.feature.booklist.usecase.DeleteBookUseCase
 import ru.gureva.ebookreader.feature.booklist.usecase.DownloadBookUseCase
 import ru.gureva.ebookreader.feature.booklist.usecase.GetAllBooksUseCase
+import ru.gureva.ebookreader.feature.booklist.usecase.SyncBooksUseCase
 
 class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, ViewModel(), KoinComponent {
     override val container = container<BookListState, BookListSideEffect>(BookListState())
@@ -21,6 +24,7 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
     private val getAllBooksUseCase: GetAllBooksUseCase by inject()
     private val deleteBookUseCase: DeleteBookUseCase by inject()
     private val downloadBookUseCase: DownloadBookUseCase by inject()
+    private val syncBooksUseCase: SyncBooksUseCase by inject()
 
     fun dispatch(event: BookListEvent) {
         when (event) {
@@ -43,37 +47,44 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
             return@intent
         }
 
-        val searchBooks = state.books.filter { book ->
-            book.local == true
-                    && (book.author.lowercase().contains(state.search.lowercase())
-                            || book.title.lowercase().contains(state.search.lowercase()))
-        }
-        reduce { state.copy(searchBooks = searchBooks) }
+//        val searchBooks = state.books.filter { book ->
+//            book.local == true
+//                    && (book.author.lowercase().contains(state.search.lowercase())
+//                            || book.title.lowercase().contains(state.search.lowercase()))
+//        }
+//        reduce { state.copy(searchBooks = searchBooks) }
     }
 
-    private fun downloadBook(fileUrl: String) = intent {
-        runCatching {
-            updateBookByUrl(fileUrl) { it.copy(isLoading = true) }
-            downloadBookUseCase(fileUrl)
-        }
+    private fun downloadBook(fileName: String) = intent {
+        updateBookDownloadingState(fileName, true)
+        val userId = Firebase.auth.currentUser?.uid!!
+        runCatching { downloadBookUseCase(userId, fileName) }
             .onSuccess {
-                updateBookByUrl(fileUrl) { it.copy(local = true, isLoading = false) }
+                updateBookDownloadingState(fileName, false)
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_successfully_downloaded)
                 ))
             }
             .onFailure {
-                updateBookByUrl(fileUrl) { it.copy(isLoading = false) }
+                updateBookDownloadingState(fileName, false)
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_downloading_error)
                 ))
             }
     }
 
+    private fun updateBookDownloadingState(fileName: String, downloadingState: Boolean) = intent {
+        val books = state.books.toMutableList()
+        val index = books.indexOfFirst { it.fileName == fileName }
+        if (index != -1) {
+            books[index] = books[index].copy(isLoading = downloadingState)
+            reduce { state.copy(books = books) }
+        }
+    }
+
     private fun deleteBook(fileName: String) = intent {
         runCatching { deleteBookUseCase(fileName) }
             .onSuccess {
-                updateBookByName(fileName) { it.copy(local = false) }
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_successfully_deleted)
                 ))
@@ -86,39 +97,22 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
     }
 
     private fun loadBooks() = intent {
-        val userId = Firebase.auth.currentUser?.uid
-            ?: return@intent
+        reduce { state.copy(isLoading = true) }
 
-        runCatching {
-            reduce { state.copy(isLoading = true) }
-            getAllBooksUseCase(userId)
+        val userId = Firebase.auth.currentUser?.uid!!
+        viewModelScope.launch {
+            syncBooksUseCase(userId)
         }
-            .onSuccess {
-                reduce { state.copy(books = it, isLoading = false) }
-            }
-            .onFailure {
+
+        getAllBooksUseCase()
+            .catch {
                 reduce { state.copy(isLoading = false) }
                 postSideEffect(BookListSideEffect.ShowSnackbarWithRetryButton(
                     resourceManager.getString(R.string.book_loading_error)
                 ))
             }
-    }
-
-    private fun updateBookByUrl(fileUrl: String, update: (Book) -> Book) = intent {
-        val books = state.books.toMutableList()
-        val index = books.indexOfFirst { it.fileUrl == fileUrl }
-        if (index != -1) {
-            books[index] = update(books[index])
-            reduce { state.copy(books = books) }
-        }
-    }
-
-    private fun updateBookByName(fileName: String, update: (Book) -> Book) = intent {
-        val books = state.books.toMutableList()
-        val index = books.indexOfFirst { it.fileName == fileName }
-        if (index != -1) {
-            books[index] = update(books[index])
-            reduce { state.copy(books = books) }
-        }
+            .collect { books ->
+                reduce { state.copy(books = books, isLoading = false) }
+            }
     }
 }

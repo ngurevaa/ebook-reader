@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
+    implementation(project(":core:database"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
     implementation(project(":feature:bookupload:api"))

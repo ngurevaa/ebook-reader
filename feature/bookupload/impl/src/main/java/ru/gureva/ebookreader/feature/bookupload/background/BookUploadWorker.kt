@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -13,7 +12,7 @@ import kotlinx.io.IOException
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.bookupload.R
 import ru.gureva.ebookreader.feature.bookupload.constants.BookUploadWorkerParams
-import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
+import ru.gureva.ebookreader.feature.bookupload.model.UploadBookRequest
 import ru.gureva.ebookreader.feature.bookupload.usecase.UploadBookUseCase
 
 class BookUploadWorker(
@@ -27,14 +26,12 @@ class BookUploadWorker(
         setForeground(getForegroundInfo())
 
         val filePath = inputData.getString(BookUploadWorkerParams.FILE_PATH) ?: return Result.failure()
-        val fileName = inputData.getString(BookUploadWorkerParams.FILE_NAME) ?: return Result.failure()
         val title = inputData.getString(BookUploadWorkerParams.TITLE) ?: return Result.failure()
         val author = inputData.getString(BookUploadWorkerParams.AUTHOR) ?: return Result.failure()
         val userId = inputData.getString(BookUploadWorkerParams.USER_ID) ?: return Result.failure()
 
-        val metadata = BookMetadata(
+        val metadata = UploadBookRequest(
             filePath = filePath,
-            fileName = fileName,
             title = title,
             author = author,
             userId = userId

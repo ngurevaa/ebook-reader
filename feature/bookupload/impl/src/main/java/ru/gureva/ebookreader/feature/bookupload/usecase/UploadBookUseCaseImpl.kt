@@ -1,15 +1,25 @@
 package ru.gureva.ebookreader.feature.bookupload.usecase
 
-import android.util.Log
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
+import ru.gureva.ebookreader.feature.bookupload.model.UploadBookRequest
 import ru.gureva.ebookreader.feature.bookupload.repository.BookRepository
+import java.util.Date
 
 class UploadBookUseCaseImpl(
     private val bookRepository: BookRepository
 ) : UploadBookUseCase {
-    override suspend operator fun invoke(bookMetadata: BookMetadata) {
-        val fileUrl = bookRepository.uploadBookToRemoteStorage(bookMetadata)
-        bookRepository.saveBookMetadataToRemoteStorage(bookMetadata, fileUrl)
-        bookRepository.saveBookToLocalStorage(bookMetadata, fileUrl)
+    override suspend operator fun invoke(uploadBookRequest: UploadBookRequest) {
+        val userId = uploadBookRequest.userId
+        val fileUrl = bookRepository.uploadBookToRemoteStorage(userId, uploadBookRequest.filePath)
+
+        val fileName = fileUrl.substringAfterLast('/')
+        val bookMetadata = BookMetadata(
+            title = uploadBookRequest.title,
+            author = uploadBookRequest.author,
+            fileName = fileName,
+            creationDate = Date()
+        )
+        bookRepository.saveBookMetadataToRemoteStorage(userId, bookMetadata)
+        bookRepository.saveBookToLocalStorage(uploadBookRequest.filePath, bookMetadata)
     }
 }

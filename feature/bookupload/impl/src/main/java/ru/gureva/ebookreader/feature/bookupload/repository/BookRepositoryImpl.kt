@@ -5,32 +5,30 @@ import kotlinx.coroutines.withContext
 import ru.gureva.ebookreader.feature.bookupload.datasource.LocalBookDataSource
 import ru.gureva.ebookreader.feature.bookupload.datasource.RemoteFirestoreDataSource
 import ru.gureva.ebookreader.feature.bookupload.datasource.RemoteSupabaseDataSource
+import ru.gureva.ebookreader.feature.bookupload.mapper.mapToBookEntity
 import ru.gureva.ebookreader.feature.bookupload.model.BookMetadata
-import ru.gureva.ebookreader.feature.bookupload.model.FirestoreBookMetadata
 
 class BookRepositoryImpl(
     private val remoteSupabaseDatasource: RemoteSupabaseDataSource,
     private val remoteFirestoreDatasource: RemoteFirestoreDataSource,
     private val localBookDatasource: LocalBookDataSource
 ) : BookRepository {
-    override suspend fun uploadBookToRemoteStorage(bookMetadata: BookMetadata): String {
+    override suspend fun uploadBookToRemoteStorage(userId: String, filePath: String): String {
         return withContext(Dispatchers.IO) {
-            remoteSupabaseDatasource.uploadBookToStorage(bookMetadata)
+            remoteSupabaseDatasource.uploadFileToStorage(userId, filePath)
         }
     }
 
-    override suspend fun saveBookMetadataToRemoteStorage(bookMetadata: BookMetadata, fileUrl: String) {
+    override suspend fun saveBookMetadataToRemoteStorage(userId: String, bookMetadata: BookMetadata) {
         withContext(Dispatchers.IO) {
-            remoteFirestoreDatasource.saveBookMetadata(
-                bookMetadata.userId,
-                FirestoreBookMetadata(bookMetadata.title, bookMetadata.author, fileUrl)
-            )
+            remoteFirestoreDatasource.saveBookMetadata(userId, bookMetadata)
         }
     }
 
-    override suspend fun saveBookToLocalStorage(bookMetadata: BookMetadata, fileUrl: String) {
+    override suspend fun saveBookToLocalStorage(filePath: String, bookMetadata: BookMetadata) {
         withContext(Dispatchers.IO) {
-            localBookDatasource.saveBook(bookMetadata, fileUrl.substringAfterLast('/'))
+            localBookDatasource.saveBook(filePath, bookMetadata.fileName)
         }
+        localBookDatasource.saveBookMetadata(bookMetadata.mapToBookEntity())
     }
 }
