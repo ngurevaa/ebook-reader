@@ -1,6 +1,5 @@
 package ru.gureva.ebookreader.navigation
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -39,39 +37,36 @@ fun BottomNavigationBar(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.substringAfterLast('.')
 
-    NavigationBar(
-        modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-            )
-    ) {
-        BottomDestinations.entries.forEach { destination ->
-            val isSelected = currentRoute == destination.route.toString()
+    Surface {
+        NavigationBar(
+            modifier = Modifier
+                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+        ) {
+            BottomDestinations.entries.forEach { destination ->
+                val isSelected = currentRoute == destination.route.toString()
 
-            NavigationBarItem(
-                enabled = false,
-                selected = false,
-                onClick = {},
-                icon = {
-                    Icon(
-                        imageVector = destination.icon,
-                        contentDescription = null,
-                        tint = if (isSelected) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.noRippleClickable {
-                            if (!isSelected) {
-                                navController.navigate(destination.route) {
-                                    popUpTo(0)
-                                    launchSingleTop = true
+                NavigationBarItem(
+                    enabled = false,
+                    selected = false,
+                    onClick = {},
+                    icon = {
+                        Icon(
+                            imageVector = destination.icon,
+                            contentDescription = null,
+                            tint = if (isSelected) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.noRippleClickable {
+                                if (!isSelected) {
+                                    navController.navigate(destination.route) {
+                                        popUpTo(0)
+                                        launchSingleTop = true
+                                    }
                                 }
                             }
-                        }
-                    )
-                }
-            )
+                        )
+                    }
+                )
+            }
         }
     }
 }

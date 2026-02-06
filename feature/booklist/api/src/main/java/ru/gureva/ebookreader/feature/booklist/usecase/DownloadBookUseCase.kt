@@ -1,5 +1,5 @@
 package ru.gureva.ebookreader.feature.booklist.usecase
 
 interface DownloadBookUseCase {
-    suspend operator fun invoke(fileUrl: String)
+    suspend operator fun invoke(userId: String, fileUrl: String)
 }

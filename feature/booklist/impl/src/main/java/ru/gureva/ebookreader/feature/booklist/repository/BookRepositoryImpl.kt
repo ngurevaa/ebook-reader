@@ -17,9 +17,9 @@ class BookRepositoryImpl(
     private val remoteSupabaseDataSource: RemoteSupabaseDataSource,
     private val localBookDataSource: LocalBookDataSource
 ) : BookRepository {
-    override suspend fun downloadBookFromSupabase(fileUrl: String): ByteArray {
+    override suspend fun downloadBookFromSupabase(userId: String, fileName: String): ByteArray {
         return withContext(Dispatchers.IO) {
-            remoteSupabaseDataSource.downloadBookFromStorage(fileUrl)
+            remoteSupabaseDataSource.downloadBookFromStorage(userId, fileName)
         }
     }
 
@@ -34,6 +34,7 @@ class BookRepositoryImpl(
         withContext(Dispatchers.IO) {
             localBookDataSource.saveBook(data, fileName)
         }
+        localBookDataSource.updateIsLocal(fileName, true)
     }
 
     override fun getAllBooks(): Flow<List<Book>> {

@@ -6,12 +6,12 @@ import io.github.jan.supabase.storage.storage
 class RemoteSupabaseDataSource(
     private val supabaseClient: SupabaseClient
 ) {
-    suspend fun downloadBookFromStorage(fileUrl: String): ByteArray {
-        val path = fileUrl.substringAfter("$STORAGE_NAME/")
+    suspend fun downloadBookFromStorage(userId: String, fileName: String): ByteArray {
+        val storagePath = "$userId/$fileName"
 
         return supabaseClient.storage
             .from(STORAGE_NAME)
-            .downloadPublic(path)
+            .downloadPublic(storagePath)
     }
 
     companion object {

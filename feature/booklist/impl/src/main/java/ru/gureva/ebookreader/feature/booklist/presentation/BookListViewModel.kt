@@ -55,23 +55,31 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
 //        reduce { state.copy(searchBooks = searchBooks) }
     }
 
-    private fun downloadBook(fileUrl: String) = intent {
-        runCatching {
-//            updateBookByUrl(fileUrl) { it.copy(isLoading = true) }
-            downloadBookUseCase(fileUrl)
-        }
+    private fun downloadBook(fileName: String) = intent {
+        updateBookDownloadingState(fileName, true)
+        val userId = Firebase.auth.currentUser?.uid!!
+        runCatching { downloadBookUseCase(userId, fileName) }
             .onSuccess {
-//                updateBookByUrl(fileUrl) { it.copy(local = true, isLoading = false) }
+                updateBookDownloadingState(fileName, false)
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_successfully_downloaded)
                 ))
             }
             .onFailure {
-//                updateBookByUrl(fileUrl) { it.copy(isLoading = false) }
+                updateBookDownloadingState(fileName, false)
                 postSideEffect(BookListSideEffect.ShowSnackbar(
                     resourceManager.getString(R.string.book_downloading_error)
                 ))
             }
+    }
+
+    private fun updateBookDownloadingState(fileName: String, downloadingState: Boolean) = intent {
+        val books = state.books.toMutableList()
+        val index = books.indexOfFirst { it.fileName == fileName }
+        if (index != -1) {
+            books[index] = books[index].copy(isLoading = downloadingState)
+            reduce { state.copy(books = books) }
+        }
     }
 
     private fun deleteBook(fileName: String) = intent {
