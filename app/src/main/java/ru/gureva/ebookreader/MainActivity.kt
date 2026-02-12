@@ -6,18 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
@@ -67,59 +58,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    AppTheme {
-        Scaffold(
-            bottomBar = {
-                Surface {
-                    NavigationBar(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-                    ) {
-                        BottomDestinations.entries.forEach { destination ->
-                            NavigationBarItem(
-                                enabled = false,
-                                selected = false,
-                                onClick = {},
-                                icon = {
-                                    Icon(
-                                        imageVector = destination.icon,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.primary,
-                                    )
-                                }
-                            )
-                            NavigationBarItem(
-                                enabled = false,
-                                selected = false,
-                                onClick = {},
-                                icon = {
-                                    Icon(
-                                        imageVector = destination.icon,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.secondary,
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-
-            }
-        ) { innerPadding ->
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-            ) {
-
             }
         }
     }
