@@ -202,13 +202,19 @@ internal fun BookList(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        contentPadding = PaddingValues(vertical = 8.dp),
     ) {
         items(
             items = books,
             key = { book -> book.fileName }
         ) {
-            BookItem(book = it, onDelete = onDelete, onDownload = onDownload, openBook = openBook)
+            BookItem(
+                book = it,
+                onDelete = onDelete,
+                onDownload = onDownload,
+                openBook = openBook,
+                modifier = Modifier.animateItem()
+            )
         }
     }
 }
@@ -218,12 +224,13 @@ internal fun BookItem(
     book: Book,
     onDelete: (String) -> Unit,
     onDownload: (String) -> Unit,
-    openBook: (String, String) -> Unit
+    openBook: (String, String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.noRippleClickable {
+        modifier = modifier.noRippleClickable {
             if (book.isLocal) openBook(book.fileName, book.title)
         }
     ) {
