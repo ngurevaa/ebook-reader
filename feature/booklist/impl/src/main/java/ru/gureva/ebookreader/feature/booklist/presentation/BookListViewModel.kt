@@ -47,12 +47,11 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
             return@intent
         }
 
-//        val searchBooks = state.books.filter { book ->
-//            book.local == true
-//                    && (book.author.lowercase().contains(state.search.lowercase())
-//                            || book.title.lowercase().contains(state.search.lowercase()))
-//        }
-//        reduce { state.copy(searchBooks = searchBooks) }
+        val searchBooks = state.books.filter { book ->
+            (book.author.lowercase().contains(state.search.lowercase())
+                    || book.title.lowercase().contains(state.search.lowercase()))
+        }
+        reduce { state.copy(searchBooks = searchBooks) }
     }
 
     private fun downloadBook(fileName: String) = intent {
@@ -101,7 +100,9 @@ class BookListViewModel : ContainerHost<BookListState, BookListSideEffect>, View
 
         val userId = Firebase.auth.currentUser?.uid!!
         viewModelScope.launch {
+            reduce { state.copy(isSynchronized = false) }
             syncBooksUseCase(userId)
+            reduce { state.copy(isSynchronized = true) }
         }
 
         getAllBooksUseCase()

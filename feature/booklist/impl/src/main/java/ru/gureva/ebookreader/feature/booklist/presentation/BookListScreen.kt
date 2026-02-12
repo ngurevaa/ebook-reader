@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -110,37 +111,12 @@ internal fun BookListScreenContent(
     state: BookListState,
     dispatch: (BookListEvent) -> Unit
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
-
     Spacer(modifier = Modifier.height(24.dp))
-    Text(
-        text = stringResource(R.string.my_books),
-        style = MaterialTheme.typography.headlineMedium
-    )
+    Header(state.isSynchronized)
     Spacer(modifier = Modifier.height(16.dp))
-    CustomTextField(
-        value = state.search,
-        onValueChange = { dispatch(BookListEvent.SearchBooks(it)) },
-        placeholder = stringResource(R.string.book_research),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        trailingIcon = {
-            if (state.search.isNotBlank()) {
-                Icon(
-                    imageVector = Icons.Filled.Cancel,
-                    contentDescription = null,
-                    modifier = Modifier.noRippleClickable {
-                        dispatch(BookListEvent.SearchBooks(""))
-                        keyboardController?.hide()
-                    }
-                )
-            }
-        },
-        modifier = Modifier
-            .focusRequester(focusRequester)
-            .focusable()
+    Search(
+        search = state.search,
+        onSearchChange = { dispatch(BookListEvent.SearchBooks(it)) }
     )
     Spacer(modifier = Modifier.height(16.dp))
     if (state.isLoading) {
@@ -160,6 +136,60 @@ internal fun BookListScreenContent(
             onDownload = { dispatch(BookListEvent.DownloadBook(it)) },
             openBook = { fileName, title -> dispatch(BookListEvent.OpenBook(fileName, title)) }
         )
+    }
+}
+
+@Composable
+internal fun Search(
+    search: String,
+    onSearchChange: (String) -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    CustomTextField(
+        value = search,
+        onValueChange = { onSearchChange(it) },
+        placeholder = stringResource(R.string.book_research),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        trailingIcon = {
+            if (search.isNotBlank()) {
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = null,
+                    modifier = Modifier.noRippleClickable {
+                        onSearchChange("")
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
+                    }
+                )
+            }
+        },
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .focusable()
+    )
+}
+
+@Composable
+internal fun Header(isSynchronized: Boolean) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(R.string.my_books),
+            style = MaterialTheme.typography.headlineMedium
+        )
+        if (!isSynchronized) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(20.dp),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
@@ -223,7 +253,8 @@ internal fun BookItem(
                     contentDescription = null,
                     modifier = Modifier.noRippleClickable {
                         onDelete(book.fileName)
-                    }
+                    },
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
             else if (book.isLoading) {
@@ -235,7 +266,8 @@ internal fun BookItem(
                     contentDescription = null,
                     modifier = Modifier.noRippleClickable {
                         onDownload(book.fileName)
-                    }
+                    },
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
