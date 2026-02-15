@@ -15,32 +15,26 @@
 * Вход через Firebase Authentication с email и паролем
 * Валидация email/пароля по мере ввода
 * Обработка исключений Firebase
-* Обработка отсутсвия сети
 * Поддержка подсказок и перехода фокуса между полями 
-* Авто-вход
-
-Скринкаст https://github.com/user-attachments/assets/80d1fd43-1198-4703-8d66-2b0d9a53522b 
+ 
 <p>
   <img width="30%" alt="Screenshot_2025-11-23-17-49-13-690_ru gureva ebookreader" src="https://github.com/user-attachments/assets/95249b4e-bd2e-482e-866b-31f9a6d40a66" />
-  <img width="30%" alt="Screenshot_2025-11-23-17-49-07-865_ru gureva ebookreader" src="https://github.com/user-attachments/assets/335f9828-6f88-4dd4-a156-be182abb4b99" />
-</p>
-<p>
   <img width="30%" alt="Screenshot_2025-11-23-19-03-00-357_ru gureva ebookreader" src="https://github.com/user-attachments/assets/d57099b5-7865-4356-ad09-f3aedfc9fc21" />
   <img width="30%" height="2160" alt="Screenshot_2025-11-23-19-03-53-243_ru gureva ebookreader" src="https://github.com/user-attachments/assets/33ccee6b-a5e9-489f-bb96-f01a6ff12adb" />
 </p>
 
+
 ### Экран загрузки книги
 * Поддержка книг в формате .txt, .epub или .pdf
-* Загрузка книг в Supabase Storage (бесплатная альтернатива Firebase Storage)
-* Локальное сохранение файла после загрузки
+* Загрузка файла книги в Supabase Storage
 * Сохранение метаданных в Firebase Firestore
-
-Скринкаст: https://github.com/user-attachments/assets/a8394b0a-f706-4fed-a885-5f6f1bcf5892
+* Локальное кэширование загруженной книги для офлайн-доступа
+* Фоновая загрузка через WorkManager с уведомлением о прогрессе
 
 <p>
-  <img width="30%" alt="Screenshot_2025-11-23-19-20-15-739_ru gureva ebookreader" src="https://github.com/user-attachments/assets/666f9c24-d79e-4b72-9f11-ce19d66094fc" />
-  <img width="30%" alt="Screenshot_2025-11-23-19-20-52-206_ru gureva ebookreader" src="https://github.com/user-attachments/assets/7a60f2f9-fd06-42cb-83c3-8a756e5b6146" />
-  <img width="30%" alt="Screenshot_2025-11-23-19-21-58-916_ru gureva ebookreader" src="https://github.com/user-attachments/assets/aac3de78-61e6-4aca-a17b-a0ececfdc4ba" />
+  <img width="30%" alt="Screenshot_2026-02-15-19-38-54-362_ru gureva ebookreader" src="https://github.com/user-attachments/assets/dcf9029d-9684-4afe-8dfc-38af99a06522" />
+  <img width="30%" alt="Screenshot_2026-02-15-19-41-43-276_ru gureva ebookreader" src="https://github.com/user-attachments/assets/017f331c-aacb-47a8-9353-5243205ca445" />
+  <img width="30%" alt="Screenshot_2026-02-15-19-58-14-463_ru gureva ebookreader" src="https://github.com/user-attachments/assets/420cc8fb-605f-4afc-ab29-a15cf0355e03" />
 </p>
 
 ### Экран скачанных книг
@@ -81,8 +75,11 @@
   <img width="30%" alt="Screenshot_2025-11-23-21-34-24-820_ru gureva ebookreader" src="https://github.com/user-attachments/assets/fbdf2191-8cb5-40ce-bc86-2843e03e51af" />
 </p>
 
-### Гугл диск со всеми скринкастами и скриншотами
-https://drive.google.com/drive/folders/1WbGeX7WwV3KG0LoORU80L9vNwvBZOHPk?usp=sharing
+### Скринкасты
+<p>
+  <img src="https://github.com/user-attachments/assets/b80b1f9c-c674-4674-8efc-e4af9bad51dc" width="30%" alt="book_upload">
+</p>
+
 
 ## Запуск проекта:
 1. Создать проект в Firebase Console
