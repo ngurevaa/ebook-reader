@@ -11,19 +11,6 @@
 * Coil
 
 ## Основной функционал:
-### Экран Входа/Регистрации
-* Вход через Firebase Authentication с email и паролем
-* Валидация email/пароля по мере ввода
-* Обработка исключений Firebase
-* Поддержка подсказок и перехода фокуса между полями 
- 
-<p>
-  <img width="30%" alt="Screenshot_2025-11-23-17-49-13-690_ru gureva ebookreader" src="https://github.com/user-attachments/assets/95249b4e-bd2e-482e-866b-31f9a6d40a66" />
-  <img width="30%" alt="Screenshot_2025-11-23-19-03-00-357_ru gureva ebookreader" src="https://github.com/user-attachments/assets/d57099b5-7865-4356-ad09-f3aedfc9fc21" />
-  <img width="30%" height="2160" alt="Screenshot_2025-11-23-19-03-53-243_ru gureva ebookreader" src="https://github.com/user-attachments/assets/33ccee6b-a5e9-489f-bb96-f01a6ff12adb" />
-</p>
-
-
 ### Экран загрузки книги
 * Поддержка книг в формате .txt, .epub или .pdf
 * Загрузка файла книги в Supabase Storage
@@ -39,14 +26,15 @@
 
 ### Экран скачанных книг
 * Отображение локальных и облачных книг
-* Поиск по названию книги и автору
-* Загрузка новых книг из Supabase Storage
+* Автоматическая синхронизация с облаком при открытии экрана
+* Поиск книги по названию или автору
+* Загрузка книг из Supabase Storage
 * Возможность локального удаления книг
 
-Скринкаст: https://github.com/user-attachments/assets/899b3196-771a-4ae9-8565-b6846dd356d1
 <p>
-  <img width="30%" alt="Screenshot_2025-11-23-19-29-11-340_ru gureva ebookreader" src="https://github.com/user-attachments/assets/52dd1ca0-0d17-4843-a59a-b768d6cb02ea" />
-  <img width="30%" alt="Screenshot_2025-11-23-19-29-20-140_ru gureva ebookreader" src="https://github.com/user-attachments/assets/24317ad9-9c8f-4cb6-9435-3389bdf48b70" />
+  <img width="30%" alt="Screenshot_2026-02-15-23-43-11-309_ru gureva ebookreader" src="https://github.com/user-attachments/assets/368d2f4f-e74b-4177-aac6-8f07b6f32b7b" />
+  <img width="30%" alt="Screenshot_2026-02-15-23-45-30-412_ru gureva ebookreader" src="https://github.com/user-attachments/assets/5dad53cb-5501-4ffd-bfbb-dceb1332642c" />
+  <img width="30%" alt="Screenshot_2026-02-15-23-45-16-557_ru gureva ebookreader" src="https://github.com/user-attachments/assets/ed8447b2-c754-41dc-9f74-b3eadd70a10d" />
 </p>
 
 ### Экран чтения книги
@@ -55,11 +43,22 @@
 * Сохранение позиции чтения в Shared Preferences
 * Отображение процента прочтения
 
-Скринкаст: https://github.com/user-attachments/assets/2646ce09-12b4-41e7-a828-01c5533f7860
 <p>
   <img width="30%" alt="Screenshot_2025-11-23-19-38-26-612_ru gureva ebookreader" src="https://github.com/user-attachments/assets/f423c9af-3a4f-46d5-9c92-788691e2288d" />
   <img width="30%" height="2160" alt="Screenshot_2025-11-23-19-38-36-999_ru gureva ebookreader" src="https://github.com/user-attachments/assets/60bda63e-d881-40ef-b421-9e0e5e6fc894" />
   <img width="30%" height="2160" alt="Screenshot_2025-11-23-19-38-45-854_ru gureva ebookreader" src="https://github.com/user-attachments/assets/ac6a5e2b-956a-4712-8094-3d25585cda33" />
+</p>
+
+### Экран Входа/Регистрации
+* Вход через Firebase Authentication с email и паролем
+* Валидация email/пароля по мере ввода
+* Обработка исключений Firebase
+* Поддержка подсказок и перехода фокуса между полями 
+ 
+<p>
+  <img width="30%" alt="Screenshot_2025-11-23-17-49-13-690_ru gureva ebookreader" src="https://github.com/user-attachments/assets/95249b4e-bd2e-482e-866b-31f9a6d40a66" />
+  <img width="30%" alt="Screenshot_2025-11-23-19-03-00-357_ru gureva ebookreader" src="https://github.com/user-attachments/assets/d57099b5-7865-4356-ad09-f3aedfc9fc21" />
+  <img width="30%" height="2160" alt="Screenshot_2025-11-23-19-03-53-243_ru gureva ebookreader" src="https://github.com/user-attachments/assets/33ccee6b-a5e9-489f-bb96-f01a6ff12adb" />
 </p>
 
 ### Экран профиля
@@ -68,7 +67,6 @@
 * Выход из аккаунта
 * Загрузка изображения в Supabase Storage
 
-Скринкаст: https://github.com/user-attachments/assets/53aa37f5-2c2c-45ea-b612-aa480df1e853
 <p>
   <img width="30%" alt="Screenshot_2025-11-23-19-46-11-179_ru gureva ebookreader" src="https://github.com/user-attachments/assets/066895da-86a4-4db6-ab98-5e1821203830" />
   <img width="30%" alt="Screenshot_2025-11-23-19-46-18-920_ru gureva ebookreader" src="https://github.com/user-attachments/assets/69c75ca2-0a79-4a89-b458-7c60f9fc00c2" />
