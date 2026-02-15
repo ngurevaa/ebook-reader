@@ -75,7 +75,8 @@
 
 ### Скринкасты
 <p>
-  <img src="https://github.com/user-attachments/assets/b80b1f9c-c674-4674-8efc-e4af9bad51dc" width="30%" alt="book_upload">
+  <img src="https://github.com/user-attachments/assets/a5d7429c-21df-4660-9b8b-aa0c275968b1" width="30%" alt="book_upload (1)">
+  <img src="https://github.com/user-attachments/assets/64b410c5-d886-4be7-a09f-69a7c9478be4" width="30%" alt="booklist">
 </p>
 
 
