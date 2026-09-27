@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -45,6 +48,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import ru.gureva.ebookreader.core.designsystem.component.CustomTextField
 import ru.gureva.ebookreader.core.ui.noRippleClickable
+import ru.gureva.ebookreader.core.util.AppLanguage
 import ru.gureva.ebookreader.feature.profile.R
 
 @Composable
@@ -105,7 +109,7 @@ internal fun ProfileScreenContent(
         Spacer(modifier = Modifier.height(20.dp))
 
         AsyncImage(
-            model = if (state.imageUrl.isNotEmpty()) state.imageUrl else R.drawable.user_placeholder,
+            model = R.drawable.user_placeholder,
             contentDescription = null,
             modifier = Modifier
                 .size(175.dp)
@@ -120,6 +124,11 @@ internal fun ProfileScreenContent(
         UsernameField(state, dispatch)
         Spacer(modifier = Modifier.height(12.dp))
         EmailField(state, dispatch)
+        Spacer(modifier = Modifier.height(12.dp))
+        LanguagePicker(
+            selectedLanguage = state.selectedLanguage,
+            onLanguageSelected = { dispatch(ProfileEvent.SelectLanguage(it)) }
+        )
         Spacer(modifier = Modifier.weight(1f))
 
         val title = if (state.isEditMode) stringResource(R.string.save_changes)
@@ -130,6 +139,61 @@ internal fun ProfileScreenContent(
         Spacer(modifier = Modifier.height(8.dp))
         LogoutButton(onClick = { dispatch(ProfileEvent.Logout) })
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+internal fun LanguagePicker(
+    selectedLanguage: AppLanguage,
+    onLanguageSelected: (AppLanguage) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        Text(
+            text = stringResource(R.string.language),
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Box {
+            Card(
+                onClick = { expanded = true },
+            ) {
+                Text(
+                    text = when (selectedLanguage) {
+                        AppLanguage.ENGLISH -> stringResource(R.string.english)
+                        AppLanguage.RUSSIAN -> stringResource(R.string.russian)
+                    },
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(12.dp),
+                )
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                AppLanguage.entries.forEach { language ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = when (language) {
+                                    AppLanguage.ENGLISH ->
+                                        stringResource(R.string.english)
+
+                                    AppLanguage.RUSSIAN ->
+                                        stringResource(R.string.russian)
+                                }
+                            )
+                        },
+                        onClick = {
+                            expanded = false
+                            onLanguageSelected(language)
+                        },
+                    )
+                }
+            }
+        }
     }
 }
 

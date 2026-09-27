@@ -1,6 +1,7 @@
 package ru.gureva.ebookreader.feature.profile.presentation
 
 import android.net.Uri
+import ru.gureva.ebookreader.core.util.AppLanguage
 
 data class ProfileState(
     val username: String = "",
@@ -9,5 +10,6 @@ data class ProfileState(
     val isEditMode: Boolean = false,
     val editedUsername: String = "",
     val editedEmail: String = "",
-    val editedImageUri: Uri? = null
+    val editedImageUri: Uri? = null,
+    val selectedLanguage: AppLanguage,
 )

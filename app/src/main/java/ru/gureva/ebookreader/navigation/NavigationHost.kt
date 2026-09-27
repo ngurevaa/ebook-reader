@@ -1,5 +1,8 @@
 package ru.gureva.ebookreader.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -66,11 +69,21 @@ fun NavigationHost(
             )
         }
 
-        composable<BookUploadRoute> {
+        composable<BookUploadRoute>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+        ) {
             BookUploadScreen()
         }
 
-        composable<BookListRoute> {
+        composable<BookListRoute>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+        ) {
             BookListScreen(
                 navigateToBook = { fileName, title ->
                     navController.navigate(ReaderRoute(fileName, title)) {
@@ -80,7 +93,20 @@ fun NavigationHost(
             )
         }
 
-        composable<ReaderRoute> { backStackEntry ->
+        composable<ReaderRoute>(
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(300)
+                )
+            }
+        ) { backStackEntry ->
             val fileName = backStackEntry.toRoute<ReaderRoute>().fileName
             val title = backStackEntry.toRoute<ReaderRoute>().title
             ReaderScreen(
@@ -92,7 +118,12 @@ fun NavigationHost(
             )
         }
 
-        composable<ProfileRoute> {
+        composable<ProfileRoute>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+        ) {
             ProfileScreen(
                 navigateToLogin = {
                     navController.navigate(LoginRoute) {

@@ -43,6 +43,11 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:database"))
 
+    implementation(libs.epublib) {
+        exclude(group = "org.slf4j")
+        exclude(group = "xmlpull")
+    }
+
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.compose)
 

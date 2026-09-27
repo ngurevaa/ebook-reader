@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="my_books">Мои книги</string>
-    <string name="book_research">Поиск книг...</string>
-    <string name="book_loading_error">Произошла ошибка. Проверьте подключение к интернету</string>
-    <string name="retry">Повторить</string>
-    <string name="load_your_first_book">Загрузите свою первую книгу!</string>
-    <string name="book_successfully_deleted">Книга успешно удалена</string>
-    <string name="book_deleting_error">Произошла ошибка при удалении книги. Попробуйте позднее</string>
-    <string name="book_successfully_downloaded">Книга успешно загружена</string>
-    <string name="book_downloading_error">Произошла ошибка при сохранении книги. Попробуйте позднее</string>
-    <string name="nothing_was_found">Ничего не найдено</string>
+    <string name="my_books">My Books</string>
+    <string name="book_research">Search books...</string>
+    <string name="book_loading_error">An error occurred. Check your internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="load_your_first_book">Upload your first book!</string>
+    <string name="book_successfully_deleted">Book deleted successfully</string>
+    <string name="book_deleting_error">An error occurred while deleting the book. Please try again later</string>
+    <string name="book_successfully_downloaded">Book downloaded successfully</string>
+    <string name="book_downloading_error">An error occurred while saving the book. Please try again later</string>
+    <string name="nothing_was_found">Nothing found</string>
+    <plurals name="total_books">
+        <item quantity="one">Total: %d book</item>
+        <item quantity="other">Total: %d books</item>
+    </plurals>
 </resources>

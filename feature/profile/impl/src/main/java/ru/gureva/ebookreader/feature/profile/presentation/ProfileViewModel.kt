@@ -1,6 +1,7 @@
 package ru.gureva.ebookreader.feature.profile.presentation
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -8,7 +9,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.gureva.ebookreader.core.util.AppLanguage
 import ru.gureva.ebookreader.core.util.FileUtil
+import ru.gureva.ebookreader.core.util.AppLocaleManager
 import ru.gureva.ebookreader.core.util.ResourceManager
 import ru.gureva.ebookreader.feature.profile.R
 import ru.gureva.ebookreader.feature.profile.model.Photo
@@ -19,7 +22,14 @@ import ru.gureva.ebookreader.feature.profile.usecase.UpdateProfileDataUseCase
 import ru.gureva.ebookreader.feature.profile.usecase.UploadPhotoUseCase
 
 class ProfileViewModel : ContainerHost<ProfileState, ProfileSideEffect>, ViewModel(), KoinComponent {
-    override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
+
+    private val appLocaleManager: AppLocaleManager by inject()
+
+    override val container = container<ProfileState, ProfileSideEffect>(
+        ProfileState(
+            selectedLanguage = appLocaleManager.getCurrentLanguage()
+        )
+    )
 
     private val resourceManager: ResourceManager by inject()
     private val fileUtil: FileUtil by inject()
@@ -37,7 +47,13 @@ class ProfileViewModel : ContainerHost<ProfileState, ProfileSideEffect>, ViewMod
             is ProfileEvent.UpdateEmail -> updateEmail(event.email)
             ProfileEvent.LoadProfileData -> loadProfileData()
             is ProfileEvent.SelectImage -> selectImage(event.image)
+            is ProfileEvent.SelectLanguage -> selectLanguage(event.language)
         }
+    }
+
+    private fun selectLanguage(language: AppLanguage) = intent {
+        appLocaleManager.setLocale(language)
+        reduce { state.copy(selectedLanguage = appLocaleManager.getCurrentLanguage()) }
     }
 
     private fun selectImage(uri: Uri) = intent {

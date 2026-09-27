@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="log_into_account">Вход в аккаунт</string>
-    <string name="registration">Регистрация</string>
+    <string name="log_into_account">Log in to your account</string>
+    <string name="registration">Registration</string>
     <string name="email">Email</string>
-    <string name="password">Пароль</string>
-    <string name="log_in">Войти</string>
-    <string name="sign_in">Зарегистрироваться</string>
-    <string name="email_error">Введите email в формате example@mail.com</string>
-    <string name="password_error">Пароль должен содержать не менее 8 символов, включая заглавные и строчные буквы, цифры и специальные символы</string>
-    <string name="registration_error">Произошла ошибка регистрации. Попробуйте повторить попытку позднее</string>
-    <string name="firebase_network_error">Проблемы с соединением. Попробуйте позднее</string>
-    <string name="user_exists_error">Пользователь с таким email уже существует</string>
-    <string name="too_many_requests_error">Слишком много попыток. Попробуйте позднее</string>
-    <string name="retry">Повторить</string>
-    <string name="network_error">Нет подключения к интернету. Проверьте Wi-Fi или мобильные данные</string>
-    <string name="invalid_credentials_error">Неправильный email или пароль</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_in">Sign up</string>
+    <string name="email_error">Enter an email in the format example@mail.com</string>
+    <string name="password_error">Password must be at least 8 characters long and include uppercase and lowercase letters, numbers, and special characters</string>
+    <string name="registration_error">Registration failed. Please try again later</string>
+    <string name="firebase_network_error">Connection error. Please try again later</string>
+    <string name="user_exists_error">A user with this email already exists</string>
+    <string name="too_many_requests_error">Too many attempts. Please try again later</string>
+    <string name="retry">Retry</string>
+    <string name="network_error">No internet connection. Check your Wi-Fi or mobile data</string>
+    <string name="invalid_credentials_error">Incorrect email or password</string>
 </resources>

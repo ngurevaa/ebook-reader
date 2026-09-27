@@ -1,6 +1,7 @@
 package ru.gureva.ebookreader.feature.profile.presentation
 
 import android.net.Uri
+import ru.gureva.ebookreader.core.util.AppLanguage
 
 sealed interface ProfileEvent {
     data object LoadProfileData : ProfileEvent
@@ -10,4 +11,5 @@ sealed interface ProfileEvent {
     data class UpdateUsername(val username: String) : ProfileEvent
     data class UpdateEmail(val email: String): ProfileEvent
     data class SelectImage(val image: Uri) : ProfileEvent
+    data class SelectLanguage(val language: AppLanguage) : ProfileEvent
 }
