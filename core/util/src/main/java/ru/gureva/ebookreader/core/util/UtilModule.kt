@@ -7,4 +7,5 @@ val utilModule = module {
     single { ResourceManager(get()) }
     single { NetworkUtil(get()) }
     single { FileUtil(get()) }
+    single { AppLocaleManager(get()) }
 }

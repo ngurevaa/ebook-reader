@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="file_loading_error">Произошла ошибка загрузки файла. Попробуйте позднее</string>
+    <string name="retry">Повторить</string>
+    <string name="settings">Aa</string>
+    <string name="read">прочитано</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="theme">Тема</string>
+</resources>

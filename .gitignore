@@ -15,3 +15,5 @@
 .cxx
 local.properties
 /.kotlin
+app/google-services.json
+core/network/secrets.properties
